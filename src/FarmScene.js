@@ -1,7 +1,9 @@
 import * as R from "ramda";
 
-const timeBetweenAbductionsMilliseconds = 5000;
+const timeBetweenAbductionsMilliseconds = 3000;
 const timeBetweenAbductionSeconds = timeBetweenAbductionsMilliseconds / 1000;
+
+const mealInterval = 5;
 
 export const FarmScene = new Phaser.Class({
 
@@ -19,22 +21,35 @@ export const FarmScene = new Phaser.Class({
     },
 
     create: function () {
-        this.text = this.add.text(30, 30, 'Abduct your first human', { font: '24px Courier', fill: '#00ff00' });
+        this.countdownText = this.add.text(30, 30, '', {font: '24px Courier', fill: '#00ff00'});
+
+        this.waitForMeal();
+        const timeToMeal = this.data.get("timeToMeal");
+        this.mealText = this.add.text(30, 80, `Time to meal: ${timeToMeal}`, {font: '24px Courier', fill: '#00ff00'});
+
+        this.isMealTime = timeToMeal === 0;
 
         this.timedEvent = this.time.delayedCall(timeBetweenAbductionsMilliseconds,
-            () => this.scene.start("SelectionScene"), [], this);
+            () => {
+                this.isMealTime ? this.scene.start("EndScene") : this.scene.start("SelectionScene");
+            }, [], this);
 
-        console.log(this.getPeople());
+        console.log(this.data.list);
     },
 
     update: function (time, delta) {
         const progress = timeBetweenAbductionSeconds - this.timedEvent.getProgress() * timeBetweenAbductionSeconds;
-        this.text.setText("Next Abduction: " + progress.toPrecision(3));
+        this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toPrecision(3)}`);
     },
 
     clearData() {
         this.data.set("people", {});
+        this.data.set("timeToMeal", mealInterval);
         this.data.set("happiness", 50);
+    },
+
+    waitForMeal() {
+        this.data.set("timeToMeal", this.data.get("timeToMeal") - 1);
     },
 
     getPeople() {
@@ -44,6 +59,7 @@ export const FarmScene = new Phaser.Class({
 
     removePerson(name) {
         this.data.set("people", R.dissoc(name, this.getPeople()));
+        this.data.set("timeToMeal", mealInterval);
     },
 
     addPerson(person) {
