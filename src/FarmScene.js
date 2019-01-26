@@ -31,7 +31,7 @@ export const FarmScene = new Phaser.Class({
 
         this.timedEvent = this.time.delayedCall(timeBetweenAbductionsMilliseconds,
             () => {
-                this.isMealTime ? this.scene.start("EndScene") : this.scene.start("SelectionScene");
+                this.scene.start("SelectionScene", { isMeal: this.isMealTime });
             }, [], this);
 
         console.log(this.data.list);
@@ -67,7 +67,7 @@ export const FarmScene = new Phaser.Class({
     },
 
     getVictims() {
-        const people = this.data.get("people");
+        const people = R.values(this.data.get("people"));
         const victims = [];
         const numberOfVictims = 3;
         for (let i = 0; i < numberOfVictims; i++) {
