@@ -14,11 +14,13 @@ export const StartScene = new Phaser.Class({
 
     preload: function ()
     {
-        this.load.image("button", "assets/start.png")
+        this.load.image("button", "assets/start.png");
+        this.load.image("ship", "assets/spaceship.png");
     },
 
     create: function ()
     {
+        const spaceship = this.add.sprite(450, 300, "ship");
         this.clickButton = this.add.sprite(450,450,"button")
             .setInteractive()
             .on("pointerdown", () => {
