@@ -1,21 +1,23 @@
 import faker from 'faker';
 import 'phaser';
-import {game} from "./index";
+import {width, height} from "./index";
 
-export class Person{
-  constructor(){
-
+export class Person {
+  constructor() {
     this.gender = faker.random.number(1); // 0 is male, 1 is female
-    this.name = faker.name.findName(null, null, this.gender);
 
-    //
+    this.firstName = faker.name.firstName(this.gender);
+    this.lastName = faker.name.lastName(this.gender);
+    this.name = faker.name.findName(this.firstName, this.lastName, this.gender);
+    this.userName = faker.internet.userName(this.firstName, this.lastName);
+    this.email = faker.internet.email(this.firstname, this.lastName);
     this.r = Math.floor(Math.random() * 256);
     this.g = Math.floor(Math.random() * 256);
     this.b = Math.floor(Math.random() * 256);
     //Alpha is the happiness of the person;
     this.a = .5;
-
     this.color = new Phaser.Display.Color(this.r, this.g, this.b, Math.floor(this.a * 256));
+    this.textcolor = new Phaser.Display.Color(255 - this.r, 255 - this.g, 255 - this.b, 255);
 
     //This is the one attribute that affects this person's happiness, and who they move towards.
     this.priority = faker.random.arrayElement(['r', 'g', 'b']);
@@ -67,8 +69,8 @@ export class Person{
   }
 
   setRandomPosition(){
-    this.x = Math.floor(Math.random() * game.config.width);
-    this.y = Math.floor(Math.random() * game.config.height);
+    this.x = Math.floor(Math.random() * width);
+    this.y = Math.floor(Math.random() * height);
     console.log(this.x, this.y);
 
   }

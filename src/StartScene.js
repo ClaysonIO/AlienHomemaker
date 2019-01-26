@@ -7,7 +7,7 @@ export const StartScene = new Phaser.Class({
         function StartScene ()
         {
             Phaser.Scene.call(this, {
-                key: 'startScene',
+                key: 'StartScene',
                 active: true,
             });
         },
@@ -24,7 +24,7 @@ export const StartScene = new Phaser.Class({
         this.clickButton = this.add.sprite(450,450,"button")
             .setInteractive()
             .on("pointerdown", () => {
-                this.scene.start("endScene");
+                this.scene.start("FarmScene");
             }, this)
             .on('pointerover', () => this.enterButtonHoverState() )
             .on('pointerout', () => this.enterButtonRestState() );
