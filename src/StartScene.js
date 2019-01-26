@@ -19,10 +19,20 @@ export const StartScene = new Phaser.Class({
 
     create: function ()
     {
-        const button = this.add.sprite(450,450,"button")
+        this.clickButton = this.add.sprite(450,450,"button")
             .setInteractive()
             .on("pointerdown", () => {
                 this.scene.start("selectionScene");
-            }, this);
+            }, this)
+            .on('pointerover', () => this.enterButtonHoverState() )
+            .on('pointerout', () => this.enterButtonRestState() );
+    },
+
+    enterButtonHoverState() {
+        this.clickButton.setAlpha(0.5);
+    },
+
+    enterButtonRestState() {
+        this.clickButton.setAlpha(1);
     },
 });
