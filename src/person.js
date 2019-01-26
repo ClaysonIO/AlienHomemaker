@@ -54,6 +54,10 @@ export class Person{
   }
 
   calculateHappiness(otherPerson){
+    const mentalDistance = Math.abs(this[this.priority] - otherPerson[this.priority]);
+
+    const physicalDistance = Math.sqrt((this.x - otherPerson.x)^2 + (this.y - otherPerson.y)^2);
+
 
   }
 
