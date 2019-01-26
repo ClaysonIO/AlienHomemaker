@@ -19,11 +19,12 @@ export const FarmScene = new Phaser.Class({
     },
 
     create: function () {
-        console.log("Test");
         this.text = this.add.text(30, 30, 'Abduct your first human', { font: '24px Courier', fill: '#00ff00' });
 
         this.timedEvent = this.time.delayedCall(timeBetweenAbductionsMilliseconds,
             () => this.scene.start("SelectionScene"), [], this);
+
+        console.log(this.getPeople());
     },
 
     update: function (time, delta) {
@@ -37,7 +38,8 @@ export const FarmScene = new Phaser.Class({
     },
 
     getPeople() {
-        this.data.get("people");
+        const result = this.data.get("people");
+        return result ? result : {};
     },
 
     removePerson(name) {
@@ -45,7 +47,7 @@ export const FarmScene = new Phaser.Class({
     },
 
     addPerson(person) {
-        this.data.set("people", R.assoc(person.name, this.getPeople()))
+        this.data.set("people", R.assoc(person.name, person, this.getPeople()));
     },
 
     getVictims() {
