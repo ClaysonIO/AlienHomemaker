@@ -28,11 +28,14 @@ export class Person{
 
     //This is the
     this.symbol;
+    this.physicsBody;
   }
 
-  setSymbol(ref, scene){
+  setSymbol(ref, scene, physics){
+    console.log("SCENE", scene);
     this.symbol = ref;
     this.symbol.alpha = this.a;
+    this.physicsBody = new Phaser.Physics.Arcade.Body(physics, this.symbol);
 
     this.symbol.setInteractive()
       .on('pointerover', ()=>{
@@ -41,6 +44,24 @@ export class Person{
       .on('pointerout', ()=>{
         this.symbol.alpha = this.a;
       })
+      .on('pointerdown', ()=>{
+        let netHappiness = 0;
+        let netVelocity = new Phaser.Math.Vector2({x: 0, y: 0});
+
+        const happiness = scene.allPeople.map(val=>{
+          const happiness = this.calculateHappinessImpact(val);
+          netHappiness -= happiness;
+
+          netVelocity = netVelocity.add(happiness.vector);
+          return [val.name, happiness.absolute, happiness.vector.x, happiness.vector.y];
+        });
+
+
+        console.table(happiness);
+        console.log(this.physicsBody);
+        this.physicsBody.setVelocity(netVelocity);
+        console.table([["SHOULD SET VELOCITY:", netVelocity.x, netVelocity.y]]);
+      });
 
     scene.input.setDraggable(this.symbol);
   }
@@ -56,28 +77,49 @@ export class Person{
 
   }
 
-  calculateHappiness(otherPerson){
+  calculateHappinessImpact(otherPerson){
+    let happiness = null;
+    let mute = 10;
+
+    //0 mental distance means very attracted to person. The higher the number, the more they repel
+    //Max is 255.
+    //neutralPoint is where it switches from attracting to repelling.
+    const neutralPoint = 50;
     const mentalDistance = Math.abs(this[this.priority] - otherPerson[this.priority]);
 
-    const physicalDistance = Math.sqrt((this.x - otherPerson.x)^2 + (this.y - otherPerson.y)^2);
+    //Cutoff distance is where a person no longer has any effect on you.
+    const cutoffDistance = 600;
+    const physicalDistance = Math.sqrt(Math.pow((this.x - otherPerson.x), 2) + Math.pow((this.y - otherPerson.y), 2));
 
+    //If beyond cutoff, no effect. Otherwise, it falls off in linear fashion.
+    if(cutoffDistance <= physicalDistance){
+      happiness = 0;
+    } else if(physicalDistance === 0) {
+      happiness = mentalDistance - neutralPoint;
+    } else {
+      happiness = (mentalDistance - neutralPoint) * (cutoffDistance - (physicalDistance / cutoffDistance)) / cutoffDistance
+    }
 
+    //Mute the happiness, so it's not insanely high.
+    const adjustedHappiness =  happiness / mute;
+
+    //Figure out the direction of the other element, then turn it into a vector based on the
+    //adjustedHappiness this person provides.
+    const yDiff = otherPerson.y - this.y;
+    const xDiff = otherPerson.x - this.x;
+    const hypDiff = Math.sqrt(Math.pow(yDiff, 2) + Math.pow(xDiff, 2));
+
+    const newX = adjustedHappiness * (xDiff / hypDiff);
+    const newY = adjustedHappiness * (yDiff / hypDiff);
+
+    return {absolute: happiness / mute, vector: new Phaser.Math.Vector2({x: newX, y: newY})};
   }
 
-  calculateVelocity(allOtherPeople){
+calculateVelocity(allOtherPeople){
 
-  }
-
-  movePerson(){
-
-  }
 }
 
-function componentToHex(c) {
-  var hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
-}
+movePerson(){
 
-function rgbToHex(r, g, b) {
-  return "0x" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
 }
