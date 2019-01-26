@@ -26,18 +26,17 @@ export class Person {
     this.x = null;
     this.y = null;
 
-    this.velocity = null; //The current movement velocity of this individual
-
     //This is the
     this.symbol;
-    this.physicsBody;
   }
 
-  setSymbol(ref, scene, physics){
-    console.log("SCENE", scene);
+  setSymbol(ref, scene){
+
     this.symbol = ref;
+    this.scene = scene;
     this.symbol.alpha = this.a;
-    this.physicsBody = new Phaser.Physics.Arcade.Body(physics, this.symbol);
+    this.symbol.setOrigin(.5, .5)
+    this.symbol.setActiveCollision().setAvsB().setBounce(1);
 
     this.symbol.setInteractive()
       .on('pointerover', ()=>{
@@ -46,24 +45,6 @@ export class Person {
       .on('pointerout', ()=>{
         this.symbol.alpha = this.a;
       })
-      .on('pointerdown', ()=>{
-        let netHappiness = 0;
-        let netVelocity = new Phaser.Math.Vector2({x: 0, y: 0});
-
-        const happiness = scene.allPeople.map(val=>{
-          const happiness = this.calculateHappinessImpact(val);
-          netHappiness -= happiness;
-
-          netVelocity = netVelocity.add(happiness.vector);
-          return [val.name, happiness.absolute, happiness.vector.x, happiness.vector.y];
-        });
-
-
-        console.table(happiness);
-        console.log(this.physicsBody);
-        this.physicsBody.setVelocity(netVelocity);
-        console.table([["SHOULD SET VELOCITY:", netVelocity.x, netVelocity.y]]);
-      });
 
     scene.input.setDraggable(this.symbol);
   }
@@ -76,12 +57,23 @@ export class Person {
   }
 
   updateHappiness(){
+    let netHappiness = 0;
+    let netVelocity = new Phaser.Math.Vector2({x: 0, y: 0});
 
+    this.scene.allPeople.forEach(val=>{
+      const happiness = this.calculateHappinessImpact(val);
+      netHappiness -= happiness;
+
+      netVelocity = netVelocity.add(happiness.vector);
+      return [val.name, happiness.absolute, happiness.vector.x, happiness.vector.y];
+    });
+
+    this.symbol.setVelocity(netVelocity.x, netVelocity.y);
   }
 
   calculateHappinessImpact(otherPerson){
     let happiness = null;
-    let mute = 10;
+    let mute = 1;
 
     //0 mental distance means very attracted to person. The higher the number, the more they repel
     //Max is 255.
@@ -91,7 +83,7 @@ export class Person {
 
     //Cutoff distance is where a person no longer has any effect on you.
     const cutoffDistance = 600;
-    const physicalDistance = Math.sqrt(Math.pow((this.x - otherPerson.x), 2) + Math.pow((this.y - otherPerson.y), 2));
+    const physicalDistance = Math.sqrt(Math.pow((this.symbol.x - otherPerson.symbol.x), 2) + Math.pow((this.symbol.y - otherPerson.symbol.y), 2));
 
     //If beyond cutoff, no effect. Otherwise, it falls off in linear fashion.
     if(cutoffDistance <= physicalDistance){
@@ -107,21 +99,13 @@ export class Person {
 
     //Figure out the direction of the other element, then turn it into a vector based on the
     //adjustedHappiness this person provides.
-    const yDiff = otherPerson.y - this.y;
-    const xDiff = otherPerson.x - this.x;
+    const yDiff = otherPerson.symbol.y - this.symbol.y;
+    const xDiff = otherPerson.symbol.x - this.symbol.x;
     const hypDiff = Math.sqrt(Math.pow(yDiff, 2) + Math.pow(xDiff, 2));
 
-    const newX = adjustedHappiness * (xDiff / hypDiff);
-    const newY = adjustedHappiness * (yDiff / hypDiff);
+    const newX = -1 * adjustedHappiness * (xDiff / hypDiff);
+    const newY = -1 * adjustedHappiness * (yDiff / hypDiff);
 
     return {absolute: happiness / mute, vector: new Phaser.Math.Vector2({x: newX, y: newY})};
   }
-
-calculateVelocity(allOtherPeople){
-
-}
-
-movePerson(){
-
-}
 }
