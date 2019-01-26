@@ -1,5 +1,8 @@
 import * as R from "ramda";
 
+const timeBetweenAbductionsMilliseconds = 5000;
+const timeBetweenAbductionSeconds = timeBetweenAbductionsMilliseconds / 1000;
+
 export const FarmScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -16,9 +19,16 @@ export const FarmScene = new Phaser.Class({
     },
 
     create: function () {
+        console.log("Test");
+        this.text = this.add.text(30, 30, 'Abduct your first human', { font: '24px Courier', fill: '#00ff00' });
+
+        this.timedEvent = this.time.delayedCall(timeBetweenAbductionsMilliseconds,
+            () => this.scene.start("SelectionScene"), [], this);
     },
 
     update: function (time, delta) {
+        const progress = timeBetweenAbductionSeconds - this.timedEvent.getProgress() * timeBetweenAbductionSeconds;
+        this.text.setText("Next Abduction: " + progress.toPrecision(3));
     },
 
     clearData() {
@@ -38,7 +48,7 @@ export const FarmScene = new Phaser.Class({
         this.data.set("people", R.assoc(person.name, this.getPeople()))
     },
 
-    getVicitims() {
+    getVictims() {
         const people = this.data.get("people");
         const victims = [];
         const numberOfVictims = 3;

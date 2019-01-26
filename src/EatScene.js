@@ -18,7 +18,7 @@ export const EatScene = new Phaser.Class({
     create: function ()
     {
         const farmScene = this.scene.get("FarmScene");
-        const victims = farmScene.getVicitims();
+        const victims = farmScene.getVictims();
         const person1 = this.add.sprite(200, 300, 'p1')
             .setInteractive()
             .setDataEnabled()

@@ -1,6 +1,6 @@
 import faker from 'faker';
 import 'phaser';
-import {game} from "./index";
+import {width, height} from "./index";
 
 export class Person {
   constructor() {
@@ -47,8 +47,8 @@ export class Person {
   }
 
   setRandomPosition(){
-    this.x = Math.floor(Math.random() * game.config.width);
-    this.y = Math.floor(Math.random() * game.config.height);
+    this.x = Math.floor(Math.random() * width);
+    this.y = Math.floor(Math.random() * height);
     console.log(this.x, this.y);
 
   }
