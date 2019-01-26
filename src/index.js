@@ -7,8 +7,8 @@ import {EndScene} from "./EndScene";
 
 const config = {
     type: Phaser.AUTO,
-    width: 900,
-    height: 9000,
+    width: 1024,
+    height: 768,
     backgroundColor: '#182d3b',
     parent: 'phaser-example',
     scene: [ StartScene, SelectionScene, FarmScene, EatScene, EndScene ]
