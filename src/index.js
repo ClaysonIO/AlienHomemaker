@@ -9,7 +9,7 @@ const config = {
     type: Phaser.AUTO,
     width: 900,
     height: 9000,
-    backgroundColor: '#000000',
+    backgroundColor: '#182d3b',
     parent: 'phaser-example',
     scene: [ StartScene, SelectionScene, FarmScene, EatScene, EndScene ]
 };

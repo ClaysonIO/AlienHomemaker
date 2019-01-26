@@ -8,7 +8,6 @@ export const SelectionScene = new Phaser.Class({
         {
             Phaser.Scene.call(this, {
                 key: 'selectionScene',
-                active: true,
             });
         },
 
