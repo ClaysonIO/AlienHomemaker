@@ -7,7 +7,7 @@ export const EndScene = new Phaser.Class({
         function EndScene ()
         {
             Phaser.Scene.call(this, {
-                key: 'endScene',
+                key: 'EndScene',
             });
         },
 
@@ -21,9 +21,7 @@ export const EndScene = new Phaser.Class({
     {
         this.add.sprite(300,400,"shooter");
         this.add.sprite(700,500,"dead");
-        const text = this.add.text(250, 150, 'You have failed us!', { font: '50px Arial', fill: '#00ff00' });
-        setTimeout(() => {
-            this.scene.start("startScene");
-        }, 3000);
+        const text = this.add.text(200, 150, 'YOU HAVE FAILED US!', { font: '50px Arial', fill: '#ce1e03' });
+        this.time.delayedCall(3000, () => this.scene.start("StartScene"),[], this);
     },
 });
