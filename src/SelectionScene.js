@@ -13,11 +13,12 @@ export const SelectionScene = new Phaser.Class({
             });
         },
 
+    init: function (data) {
+        this.isMeal = data.isMeal;
+    },
+
     preload: function ()
     {
-        this.load.image('p1', 'assets/bikkuriman.png');
-        this.load.image('p2', 'assets/bikkuriman.png');
-        this.load.image('p3', 'assets/bikkuriman.png');
     },
 
     sendToFarm: function(person) {
@@ -26,7 +27,7 @@ export const SelectionScene = new Phaser.Class({
         this.scene.switch("FarmScene")
     },
 
-    drawPerson: function(person, i, size) 
+    drawPerson: function(person, i, size)
     {
         const config = this.game.config;
 
@@ -43,7 +44,7 @@ export const SelectionScene = new Phaser.Class({
         c.add([circle, txt]);
         const hitArea = new Phaser.Geom.Circle(0, 0, size);
         c.setInteractive(hitArea, Phaser.Geom.Circle.Contains);
-        
+
         c.on("pointerdown", () => {
             this.sendToFarm(person);
         });
@@ -63,25 +64,26 @@ export const SelectionScene = new Phaser.Class({
 
     create: function ()
     {
-        const personsize = 100;
+        const personSize = 100;
+        const farmScene = this.scene.get("FarmScene");
 
         this.graphics = this.add.graphics();
-        this.instructionsText = this.add.text(30, 30, 'Abduct your first human', { font: '24px Courier', fill: '#00ff00' });
+        this.instructionsText = this.add.text(30, 30, `${this.isMeal ? "Eat" : "Abduct"} a human`, { font: '24px Courier', fill: '#00ff00' });
         this.nameText = this.add.text(30, 60, '', { font: '16px Courier', fill: '#00ff00' });
         this.emailText = this.add.text(30, 80, '', { font: '16px Courier', fill: '#00ff00' });
         this.userNameText = this.add.text(30, 100, '', { font: '16px Courier', fill: '#00ff00' });
 
-        let i = 100;
-        const people = [
-            new Person(),
-            new Person(),
-            new Person(),
-        ];
-        people.forEach((p, i) => this.drawPerson(p, i, personsize));
+        const people = this.isMeal
+            ? farmScene.getVictims()
+            : [
+                new Person(),
+                new Person(),
+                new Person(),
+            ];
+        people.forEach((p, i) => this.drawPerson(p, i, personSize));
     },
 
     update: function (time, delta)
     {
     }
-
 });
