@@ -7,37 +7,40 @@ export class Person{
 
     this.gender = faker.random.number(1); // 0 is male, 1 is female
     this.name = faker.name.findName(null, null, this.gender);
+
+    //
     this.r = Math.floor(Math.random() * 256);
     this.g = Math.floor(Math.random() * 256);
     this.b = Math.floor(Math.random() * 256);
+    //Alpha is the happiness of the person;
     this.a = .5;
 
     this.color = new Phaser.Display.Color(this.r, this.g, this.b, Math.floor(this.a * 256));
 
+    //This is the one attribute that affects this person's happiness, and who they move towards.
     this.priority = faker.random.arrayElement(['r', 'g', 'b']);
 
-    this.x = null; //Current position in the farm
+    //Current position in the farm
+    this.x = null;
     this.y = null;
 
     this.velocity = null; //The current movement velocity of this individual
 
+    //This is the
     this.symbol;
   }
 
   setSymbol(ref, scene){
     this.symbol = ref;
-    this.symbol.setInteractive();
     this.symbol.alpha = this.a;
 
-    this.symbol.on('pointerover', ()=>{
-      console.log("Set Alpha")
-      this.symbol.alpha = 1;
-    })
-
-    this.symbol.on('pointerout', ()=>{
-      console.log("Set Alpha")
-      this.symbol.alpha = this.a;
-    })
+    this.symbol.setInteractive()
+      .on('pointerover', ()=>{
+        this.symbol.alpha = 1;
+      })
+      .on('pointerout', ()=>{
+        this.symbol.alpha = this.a;
+      })
 
     scene.input.setDraggable(this.symbol);
   }
