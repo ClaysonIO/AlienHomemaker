@@ -25,6 +25,7 @@ export const StartScene = new Phaser.Class({
             .setInteractive()
             .on("pointerdown", () => {
                 this.scene.start("FarmScene");
+                this.scene.get("FarmScene").clearData();
             }, this)
             .on('pointerover', () => this.enterButtonHoverState() )
             .on('pointerout', () => this.enterButtonRestState() );

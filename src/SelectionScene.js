@@ -48,13 +48,11 @@ export const SelectionScene = new Phaser.Class({
             this.sendToFarm(person);
         });
         c.on("pointerover", () => {
-            console.log('pointerover');
             this.nameText.setText(person.name);
             this.emailText.setText(person.email);
             this.userNameText.setText('@' + person.userName);
         });
         c.on("pointerout", () => {
-            console.log('pointerout');
             this.nameText.setText('');
             this.emailText.setText('');
             this.userNameText.setText('');
