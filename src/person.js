@@ -2,14 +2,14 @@ import faker from 'faker';
 import 'phaser';
 import {game} from "./index";
 
-export class Person{
-  constructor(){
-
+export class Person {
+  constructor() {
     this.gender = faker.random.number(1); // 0 is male, 1 is female
     this.name = faker.name.findName(null, null, this.gender);
     this.r = Math.floor(Math.random() * 256);
     this.g = Math.floor(Math.random() * 256);
     this.b = Math.floor(Math.random() * 256);
+    this.color = rgb(this.r, this.g, this.b);
     this.a = .5;
 
     this.color = new Phaser.Display.Color(this.r, this.g, this.b, Math.floor(this.a * 256));
@@ -64,13 +64,4 @@ export class Person{
   movePerson(){
 
   }
-}
-
-function componentToHex(c) {
-  var hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
-}
-
-function rgbToHex(r, g, b) {
-  return "0x" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
