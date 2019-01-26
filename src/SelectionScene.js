@@ -21,8 +21,9 @@ export const SelectionScene = new Phaser.Class({
     },
 
     sendToFarm: function(person) {
-        const farm = this.scene.get('FarmScene');
+        const farm = this.scene.get("FarmScene");
         farm.addPerson(person);
+        this.scene.switch("FarmScene")
     },
 
     drawPerson: function(person, i, size) 

@@ -6,23 +6,19 @@ export const FarmScene = new Phaser.Class({
 
     initialize:
 
-        function FarmScene ()
-        {
+        function FarmScene() {
             Phaser.Scene.call(this, {
-                key: 'farmScene',
+                key: 'FarmScene',
             });
         },
 
-    preload: function ()
-    {
+    preload: function () {
     },
 
-    create: function ()
-    {
+    create: function () {
     },
 
-    update: function (time, delta)
-    {
+    update: function (time, delta) {
     },
 
     clearData() {
@@ -41,4 +37,14 @@ export const FarmScene = new Phaser.Class({
     addPerson(person) {
         this.data.set("people", R.assoc(person.name, this.getPeople()))
     },
+
+    getVicitims() {
+        const people = this.data.get("people");
+        const victims = [];
+        const numberOfVictims = 3;
+        for (let i = 0; i < numberOfVictims; i++) {
+            victims.push(people[Math.floor(Math.random() * people.length)]);
+        }
+        return victims;
+    }
 });
