@@ -2675,7 +2675,7 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-phaser@^3.3.0:
+phaser@^3.15.1:
   version "3.15.1"
   resolved "https://registry.yarnpkg.com/phaser/-/phaser-3.15.1.tgz#17d41fb5b310fb062952e29d9bb26a99c90d3a44"
   integrity sha512-K2IaBziSW6OFyIkIFyJgBSi+kL1yip3gbL6TBsjzesJqLxP3o5+NwfPf6fqrQ4yxBYbbuKP2da5lsh5LFw7jXA==
