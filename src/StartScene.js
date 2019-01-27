@@ -1,4 +1,4 @@
-import { width, height } from "./index";
+import {width, height, headerFont, dangerColor, textColor, biggerFont} from "./index";
 
 export const StartScene = new Phaser.Class({
 
@@ -18,6 +18,7 @@ export const StartScene = new Phaser.Class({
     {
         this.load.image("button", "assets/start.png");
         this.load.image("ship", "assets/spaceship.png");
+        this.load.image("logo", "assets/logo.png");
     },
 
     create: function ()
@@ -31,6 +32,13 @@ export const StartScene = new Phaser.Class({
             }, this)
             .on('pointerover', () => this.enterButtonHoverState() )
             .on('pointerout', () => this.enterButtonRestState() );
+        this.logo = this.add.sprite(width / 2, height / 5.6, "logo").setScale(2,2);
+
+        this.instructionsText = this.add.text(80, height / 1.5,
+            "You have been tasked to build a sustainable\n" +
+            "home for our abductees. You may eat the\n" +
+            "undesirables ...",
+            { font: biggerFont, fill: textColor, });
     },
 
     enterButtonHoverState() {
