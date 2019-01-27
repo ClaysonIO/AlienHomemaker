@@ -30,9 +30,8 @@ export const FarmScene = new Phaser.Class({
 
     this.countdownText = this.add.text(30, 30, '', {font: '24px Courier', fill: '#00ff00'});
 
-    R.values(this.getPeople()).forEach(p => {
-      console.log(p)
-    })
+    R.values(this.getPeople())
+        .forEach(p => this.renderPerson(p));
 
     this.waitForMeal();
     const timeToMeal = this.data.get("timeToMeal");
@@ -55,7 +54,6 @@ export const FarmScene = new Phaser.Class({
     const everybody = R.values(this.getPeople());
 
     everybody.forEach(p => {
-      this.renderPerson(p);
       p.updateHappiness(everybody);
     })
   },
@@ -71,7 +69,6 @@ export const FarmScene = new Phaser.Class({
   },
 
   getPeople() {
-
     const result = this.data.get("people");
     return result ? result : {};
   },
@@ -86,7 +83,6 @@ export const FarmScene = new Phaser.Class({
   },
 
   renderPerson(person) {
-    console.log("renderPerson THIS", this)
     const symbol = this.impact.add.sprite(person.x, person.y, "face");
     person.setSymbol(symbol, this);
   },

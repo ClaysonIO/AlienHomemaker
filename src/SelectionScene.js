@@ -24,6 +24,7 @@ export const SelectionScene = new Phaser.Class({
     sendToFarm: function(person) {
         const farm = this.scene.get("FarmScene");
         farm.addPerson(person);
+        person.setRandomPosition();
         this.clearText();
         this.scene.switch("FarmScene")
     },
