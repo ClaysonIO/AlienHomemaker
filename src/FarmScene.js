@@ -133,7 +133,8 @@ export const FarmScene = new Phaser.Class({
   },
 
   removePerson(name) {
-    this.getPeople()[name].symbol.destroy();
+    this.getPeople()[name].symbol.body.body.destroy();
+    this.getPeople()[name].symbol.container.destroy();
     this.data.set("people", R.dissoc(name, this.getPeople()));
     this.data.set("timeToMeal", mealInterval);
   },
@@ -143,8 +144,8 @@ export const FarmScene = new Phaser.Class({
   },
 
   renderPerson(person) {
-    const symbol = this.impact.add.sprite(person.x, person.y, "face");
-    person.setSymbol(symbol, this);
+    // const symbol = this.impact.add.sprite(person.x, person.y, "face");
+    person.createSymbol(this);
   },
 
   getVictims() {
