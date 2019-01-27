@@ -22,10 +22,10 @@ export class Person {
     this.a = 1.0;
 
     this.color = new Phaser.Display.Color(this.r, this.g, this.b, Math.floor(this.a * 256));
-  
+
     //This is the one attribute that affects this person's happiness, and who they move towards.
     this.priority = faker.random.arrayElement(['r', 'g', 'b']);
-    
+
     //Current position in the farm
     this.x = Math.floor(width * Math.random());
     this.y = Math.floor(height * Math.random());
@@ -37,16 +37,14 @@ export class Person {
   hexToRgb(hex){
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
     } : null;
   }
 
   setSymbol(ref, scene){
-    console.log("SCENE", scene);
     this.symbol = ref;
-    this.scene = scene;
     this.symbol.alpha = this.a;
     this.symbol.setOrigin(.5, .5)
     this.symbol.setActiveCollision().setAvsB().setBounce(5);
@@ -67,24 +65,31 @@ export class Person {
     this.y = Math.floor(Math.random() * height);
   }
 
-  updateHappiness(allPeople){
-    let netHappiness = 0;
-    let netVelocity = new Phaser.Math.Vector2({x: 0, y: 0});
-
-    allPeople.forEach(val=>{
+  updateHappiness(allPeople, delta){
+    const {netHappiness, netVelocity} = allPeople.reduce((acc, val)=>{
       const happiness = this.calculateHappinessImpact(val);
-      netHappiness -= happiness;
+      acc.netHappiness -= happiness.absolute;
+      acc.netVelocity = acc.netVelocity.add(happiness.vector);
+      return acc;
+    }, {netHappiness: 0, netVelocity: new Phaser.Math.Vector2({x: 0, y: 0})});
 
-      netVelocity = netVelocity.add(happiness.vector);
-      return [val.name, happiness.absolute, happiness.vector.x, happiness.vector.y];
-    });
-
+    console.log("Delta", delta);
+    this.setHappiness(netHappiness * (delta / 1000));
     this.symbol.setAcceleration(netVelocity.x, netVelocity.y);
+    return this.a;
+  }
+
+  setHappiness(happiness){
+    this.a += happiness;
+    if(this.a > 1){
+      this.a = 1;
+    }
+    console.log(this.a);
   }
 
   calculateHappinessImpact(otherPerson){
     let happiness = null;
-    let mute = 1;
+    let mute = 100;
 
     //0 mental distance means very attracted to person. The higher the number, the more they repel
     //Max is 255.
@@ -114,9 +119,9 @@ export class Person {
     const xDiff = otherPerson.symbol.x - this.symbol.x;
     const hypDiff = Math.sqrt(Math.pow(yDiff, 2) + Math.pow(xDiff, 2));
 
-    const newX = -1 * adjustedHappiness * (xDiff / hypDiff);
-    const newY = -1 * adjustedHappiness * (yDiff / hypDiff);
+    const newX = -1 * happiness * (xDiff / hypDiff);
+    const newY = -1 * happiness * (yDiff / hypDiff);
 
-    return {absolute: happiness / mute, vector: new Phaser.Math.Vector2({x: newX, y: newY})};
+    return {absolute: adjustedHappiness, vector: new Phaser.Math.Vector2({x: newX, y: newY})};
   }
 }

@@ -32,9 +32,11 @@ export const FarmScene = new Phaser.Class({
     const spriteBounds = Phaser.Geom.Rectangle.Inflate(Phaser.Geom.Rectangle.Clone(worldBounds), -sides, -sides);
     this.impact.world.setBounds(0, 0, worldBounds.width, worldBounds.height, 64);
 
+    this.happiness = 1;
     this.countdownText = this.add.text(30, 30, '', {font: bigFont, fill: textColor});
-
     this.mealText = this.add.text(30, 80, '', {font: bigFont, fill: textColor});
+    this.happinessText = this.add.text(30, 130, '', {font: bigFont, fill: textColor});
+    this.populationText = this.add.text(30, 180, '', {font: bigFont, fill: textColor});
 
     this.startScene();
   },
@@ -61,6 +63,8 @@ export const FarmScene = new Phaser.Class({
         this.scene.run("SelectionScene", { isMeal: this.isMealTime });
         this.mealText.setText('');
         this.countdownText.setText('');
+        this.happinessText.setText('');
+        this.populationText.setText('');
 
         console.log("ACTIVE", this.scene.get('FarmScene'))
       }, [], this)
@@ -68,15 +72,20 @@ export const FarmScene = new Phaser.Class({
 
   update: function (time, delta) {
     const progress = timeBetweenAbductionSeconds - this.timedEvent.getProgress() * timeBetweenAbductionSeconds;
-    if (!this.isPaused){
-      this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toPrecision(3)}`);
-    }
 
     const everybody = R.values(this.getPeople());
 
-    everybody.forEach(p => {
-      p.updateHappiness(everybody);
-    })
+    const totalHappiness = everybody.reduce((acc, p) => {
+      acc += p.updateHappiness(everybody, delta);
+      return acc;
+    }, 0);
+    this.happiness = everybody.length ? totalHappiness / everybody.length : 1;
+
+    if (!this.isPaused){
+      this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toPrecision(3)}`);
+      this.happinessText.setText(`Happiness: ${Math.floor(this.happiness * 100)}%`);
+      this.populationText.setText(`Population: ${everybody.length}`);
+    }
   },
 
   clearData() {
