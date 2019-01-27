@@ -1,4 +1,4 @@
-import {width, height, headerFont, dangerColor, textColor, biggerFont} from "./index";
+import {width, height, textColor, biggerFont} from "./index";
 
 export const StartScene = new Phaser.Class({
 

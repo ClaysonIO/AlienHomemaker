@@ -1,5 +1,5 @@
 import { Person } from "./person";
-import {height, width, headerFont, dangerColor} from "./index";
+import {height, width, smallFont, textColor} from "./index";
 
 let pid = 0;
 
@@ -42,7 +42,6 @@ export const SelectionScene = new Phaser.Class({
             farm.addPerson(person);
         }
         this.clearProfile();
-        this.instructionsText.setText('');
         // this.scene.resume("FarmScene")
         this.scene.get("FarmScene").startScene();
         this.people.clear(true, true);
@@ -51,11 +50,13 @@ export const SelectionScene = new Phaser.Class({
     },
 
     setProfile(person) {
-        this.nameText.setText(person.name + ' (@' + person.userName + ')');
+        this.nameText.setText(person.name);
+        this.userNameText.setText('@' + person.userName);
     },
 
     clearProfile() {
         this.nameText.setText('');
+        this.userNameText.setText('');
     },
 
     create: function ()
@@ -77,8 +78,8 @@ export const SelectionScene = new Phaser.Class({
         if (this.isMeal) {
             this.add.sprite(50, 200, "eat");
         }
-        this.instructionsText = this.add.text(90, 80, `${this.isMeal ? "Eat" : "Abduct"} a human`, { font: headerFont, fill: dangerColor });
-        this.nameText = this.add.text(90, 110, '', { font: headerFont, fill: dangerColor });
+        this.nameText = this.add.text(810, 510, '', { font: smallFont, fill: textColor });
+        this.userNameText = this.add.text(810, 540, '', { font: smallFont, fill: textColor });
         this.circle1 = new Phaser.Geom.Circle(width / 2, height / 2, personSize * 2);
 
         this.people = this.add.group();
