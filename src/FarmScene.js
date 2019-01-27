@@ -101,6 +101,7 @@ export const FarmScene = new Phaser.Class({
         id = getRandomIndex(people);
         maxAttempts--;
       }
+      set.add(id);
       victims.push(people[id]);
     }
     return victims;
