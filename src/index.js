@@ -4,8 +4,8 @@ import {StartScene} from "./StartScene";
 import {FarmScene} from "./FarmScene";
 import {EndScene} from "./EndScene";
 
-export const width = 1024;
-export const height = 768;
+export const width = 1100;
+export const height = 800;
 export const backgroundColor = '#182d3b';
 export const textColor = '#18A63b';
 export const biggerFont = '48px Courier';

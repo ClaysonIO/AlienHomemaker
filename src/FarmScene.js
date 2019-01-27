@@ -66,10 +66,6 @@ export const FarmScene = new Phaser.Class({
         this.isPaused = true;
         this.scene.pause('FarmScene');
         this.scene.run("SelectionScene", { isMeal: this.isMealTime });
-        this.mealText.setText('');
-        this.countdownText.setText('');
-        this.happinessText.setText('');
-        this.populationText.setText('');
       }, [], this)
   },
 
@@ -85,7 +81,7 @@ export const FarmScene = new Phaser.Class({
     this.happiness = everybody.length ? totalHappiness / everybody.length : 1;
 
     if (!this.isPaused){
-      this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toPrecision(3)}`);
+      this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toString().substr(0,4)}`);
       this.happinessText.setText(`Happiness: ${Math.floor(this.happiness * 100)}%`);
       this.populationText.setText(`Population: ${everybody.length}`);
       if (this.happiness < 0.15) {
