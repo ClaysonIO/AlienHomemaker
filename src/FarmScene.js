@@ -37,10 +37,10 @@ export const FarmScene = new Phaser.Class({
     this.impact.world.setBounds(48, 48, worldBounds.width, worldBounds.height, 64);
 
     this.happiness = 1;
-    this.countdownText = this.add.text(30, 30, '', {font: bigFont, fill: textColor});
-    this.mealText = this.add.text(30, 80, '', {font: bigFont, fill: textColor});
-    this.happinessText = this.add.text(30, 130, '', {font: bigFont, fill: textColor});
-    this.populationText = this.add.text(30, 180, '', {font: bigFont, fill: textColor});
+    this.countdownText = this.add.text(810, 30, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
+    this.mealText = this.add.text(810, 80, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
+    this.happinessText = this.add.text(810, 130, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
+    this.populationText = this.add.text(810, 180, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
 
 
     this.startScene();

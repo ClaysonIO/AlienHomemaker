@@ -9,7 +9,7 @@ export const height = 768;
 export const backgroundColor = '#182d3b';
 export const textColor = '#18A63b';
 export const biggerFont = '48px Courier';
-export const bigFont = '24px Courier';
+export const bigFont = '20px Courier';
 export const smallFont = '16px Courier';
 
 

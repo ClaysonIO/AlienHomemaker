@@ -37,7 +37,7 @@ export const SelectionScene = new Phaser.Class({
         this.instructionsText.setText('');
         this.scene.resume("FarmScene")
         this.scene.get("FarmScene").startScene();
-        this.scene.stop('SelectionScene');
+        this.scene.sleep('SelectionScene');
     },
 
     drawPerson: function(person, size) 
