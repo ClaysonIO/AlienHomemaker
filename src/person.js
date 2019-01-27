@@ -16,9 +16,13 @@ export class Person {
     const bgColor = this.hexToRgb(backgroundColor);
     const personColor = this.hexToRgb(faker.internet.color(bgColor.r, bgColor.g, bgColor.b));
 
-    this.r = personColor.r;
-    this.g = personColor.g;
-    this.b = personColor.b;
+    // this.r = personColor.r;
+    // this.g = personColor.g;
+    // this.b = personColor.b;
+
+    this.r = Math.floor(Math.random() * 256);
+    this.g = Math.floor(Math.random() * 256);
+    this.b = Math.floor(Math.random() * 256);
 
     //Alpha is the happiness of the person;
     this.a = 1.0;

@@ -34,7 +34,12 @@ export const FarmScene = new Phaser.Class({
     const sides = (64 * 2) + 96;
     const worldBounds = new Phaser.Geom.Rectangle(48, 48, 704, 504);
     const spriteBounds = Phaser.Geom.Rectangle.Inflate(Phaser.Geom.Rectangle.Clone(worldBounds), -sides, -sides);
-    this.impact.world.setBounds(48, 48, worldBounds.width, worldBounds.height, 64);
+    // this.impact.world.setBounds(48, 48, worldBounds.width + 200, worldBounds.height, 64, false, false, true, true);
+    // this.impact.world.setBounds(48, 48, worldBounds.width , worldBounds.height + 200, 64, true, true, false, false);
+    this.impact.world.updateWall(true, 'left', 0, 0, 48, worldBounds.height + 200);
+    this.impact.world.updateWall(true, 'right', 752, 0, 48, worldBounds.height + 200);
+    this.impact.world.updateWall(true, 'top', 0, 0, worldBounds.width + 200, 48);
+    this.impact.world.updateWall(true, 'bottom', 0, 552, worldBounds.width + 200, 48);
 
     this.happiness = 1;
     this.countdownText = this.add.text(810, 30, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
