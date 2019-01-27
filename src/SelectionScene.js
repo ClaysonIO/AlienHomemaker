@@ -1,5 +1,5 @@
 import { Person } from "./person";
-import { height, width, textColor, biggerFont, bigFont, smallFont } from "./index";
+import { height, width, textColor, bigFont, smallFont, pid } from "./index";
 
 export const SelectionScene = new Phaser.Class({
 
@@ -20,10 +20,11 @@ export const SelectionScene = new Phaser.Class({
 
     preload: function ()
     {
-        this.pplList = this.isMeal 
-            ? this.scene.get("FarmScene").getVictims()
-            : [ new Person(), new Person(), new Person() ];
-        this.pplList.forEach(p => this.load.image(p.ipv6, 'https://picsum.photos/141/141/?random'));
+        if (!this.isMeal) {
+            this.load.image('i' + pid, 'https://picsum.photos/141/141/?random');
+            this.load.image('i' + (pid + 1), 'https://picsum.photos/141/141/?random');
+            this.load.image('i' + (pid + 2), 'https://picsum.photos/141/141/?random');
+        }
     },
 
     sendToFarm: function(person) {
@@ -40,34 +41,6 @@ export const SelectionScene = new Phaser.Class({
         this.scene.stop('SelectionScene');
     },
 
-    drawPerson: function(person, size) 
-    {
-        const shadowCircle = this.add.graphics();
-        shadowCircle.fillStyle('#000');
-        shadowCircle.fillCircle(0, 0, size + 2);
-
-        const circle = this.add.graphics();
-        circle.fillStyle(person.color.color);
-        circle.fillCircle(0, 0, size);
-
-        const txt = this.add.text(35, 71, person.gender ? 'X' : 'Y', { font: biggerFont, fill: '#FFF' });
-        const img = this.add.image(0, 0, person.ipv6);
-        const c = this.add.container(0, 0, [shadowCircle, circle, txt, img]);
-
-        const hitArea = new Phaser.Geom.Circle(0, 0, size);
-        c.setInteractive(hitArea, Phaser.Geom.Circle.Contains)
-            .on("pointerdown", () => {
-                this.sendToFarm(person);
-            })
-            .on("pointerover", () => {
-                this.setProfile(person);
-            })
-            .on("pointerout", () => {
-                this.clearProfile();
-            });
-        return c;
-    },
-
     setProfile(person) {
         this.nameText.setText(person.name + ' (@' + person.userName + ')');
     },
@@ -78,6 +51,7 @@ export const SelectionScene = new Phaser.Class({
 
     create: function ()
     {
+        console.log('create');
         this.scene.bringToTop("SelectionScene");
         const personSize = 100;
 
@@ -87,13 +61,31 @@ export const SelectionScene = new Phaser.Class({
         this.circle1 = new Phaser.Geom.Circle(width / 2, height / 2, personSize * 2);
 
         this.people = this.add.group();
-        this.pplList.forEach(p => this.people.add(this.drawPerson(p, personSize)));
+        const pplList = this.isMeal 
+            ? this.scene.get("FarmScene").getVictims()
+            : [ new Person(), new Person(), new Person() ];
+
+        pplList.forEach(person => {
+            const c = person.drawPerson(this, personSize);
+            c.on("pointerdown", () => {
+              this.sendToFarm(person);
+            })
+            .on("pointerover", () => {
+                this.setProfile(person);
+            })
+            .on("pointerout", () => {
+                this.clearProfile();
+            });
+            this.people.add(c);
+        });
         Phaser.Actions.PlaceOnCircle(this.people.getChildren(), this.circle1);
     },
 
     update: function (time, delta)
     {
-        const rotationSpeed = 0.008;
-        Phaser.Actions.RotateAroundDistance(this.people.getChildren(), this.circle1, rotationSpeed, this.circle1.radius);
+        if (this.people) {
+            const rotationSpeed = 0.008;
+            Phaser.Actions.RotateAroundDistance(this.people.getChildren(), this.circle1, rotationSpeed, this.circle1.radius);
+        }
     }
 });
