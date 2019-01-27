@@ -30,24 +30,43 @@ export const FarmScene = new Phaser.Class({
 
     this.countdownText = this.add.text(30, 30, '', {font: bigFont, fill: textColor});
 
+    this.mealText = this.add.text(30, 80, '', {font: bigFont, fill: textColor});
+
+    this.startScene();
+  },
+
+  startScene: function(){
     R.values(this.getPeople())
-        .forEach(p => this.renderPerson(p));
+      .forEach(p => {
+        if(!p.symbol){
+          this.renderPerson(p)
+        }
+      });
 
     this.waitForMeal();
     const timeToMeal = this.data.get("timeToMeal");
-    this.mealText = this.add.text(30, 80, `Time to meal: ${timeToMeal}`, {font: bigFont, fill: textColor});
+    this.mealText.setText(`Time to meal: ${timeToMeal}`);
 
     this.isMealTime = timeToMeal === 0;
+    this.isPaused = false;
 
     this.timedEvent = this.time.delayedCall(timeBetweenAbductionsMilliseconds,
       () => {
-        this.scene.start("SelectionScene", { isMeal: this.isMealTime });
-      }, [], this);
+        this.isPaused = true;
+        this.scene.pause('FarmScene');
+        this.scene.run("SelectionScene", { isMeal: this.isMealTime });
+        this.mealText.setText('');
+        this.countdownText.setText('');
+
+        console.log("ACTIVE", this.scene.get('FarmScene'))
+      }, [], this)
   },
 
   update: function (time, delta) {
     const progress = timeBetweenAbductionSeconds - this.timedEvent.getProgress() * timeBetweenAbductionSeconds;
-    this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toPrecision(3)}`);
+    if (!this.isPaused){
+      this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toPrecision(3)}`);
+    }
 
     const everybody = R.values(this.getPeople());
 

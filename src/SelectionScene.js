@@ -32,7 +32,9 @@ export const SelectionScene = new Phaser.Class({
         }
         this.clearProfile();
         this.instructionsText.setText('');
-        this.scene.start("FarmScene")
+        this.scene.resume("FarmScene")
+        this.scene.get("FarmScene").startScene();
+        this.scene.stop('SelectionScene');
     },
 
     drawPerson: function(person, size) 
@@ -67,6 +69,7 @@ export const SelectionScene = new Phaser.Class({
 
     create: function ()
     {
+        this.scene.bringToTop("SelectionScene");
         const personSize = 100;
 
         this.graphics = this.add.graphics();
