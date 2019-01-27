@@ -25,6 +25,7 @@ export const StartScene = new Phaser.Class({
     create: function ()
     {
         const audio = this.sound.add("background", { loop: true });
+        audio.volume = 0.5;
         audio.play();
         const spaceship = this.add.sprite(width / 2, height / 3, "ship");
         this.clickButton = this.add.sprite(width / 2, height / 1.8,"button")
