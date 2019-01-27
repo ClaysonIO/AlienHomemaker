@@ -29,8 +29,8 @@ export class Person {
     this.priority = faker.random.arrayElement(['r', 'g', 'b']);
 
     //Current position in the farm
-    this.x = Math.floor(704 * Math.random()) + 48;
-    this.y = Math.floor(504 * Math.random()) + 48;
+    this.x = Math.floor(600 * Math.random()) + 100;
+    this.y = Math.floor(400 * Math.random()) + 100;
 
     //This is the
     this.symbol;
