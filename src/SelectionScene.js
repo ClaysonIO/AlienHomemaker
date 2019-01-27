@@ -1,5 +1,5 @@
 import { Person } from "./person";
-import { height, width, textColor, bigFont, smallFont } from "./index";
+import {height, width, headerFont, dangerColor} from "./index";
 
 let pid = 0;
 
@@ -27,6 +27,7 @@ export const SelectionScene = new Phaser.Class({
             this.load.image('i' + (pid + 1), 'https://picsum.photos/141/141/?random');
             this.load.image('i' + (pid + 2), 'https://picsum.photos/141/141/?random');
         }
+        this.load.image("eat", "assets/attack.png")
     },
 
     sendToFarm: function(person) {
@@ -59,8 +60,11 @@ export const SelectionScene = new Phaser.Class({
         const personSize = 100;
 
         this.graphics = this.add.graphics();
-        this.instructionsText = this.add.text(30, 30, `${this.isMeal ? "Eat" : "Abduct"} a human`, { font: bigFont, fill: textColor });
-        this.nameText = this.add.text(30, 60, '', { font: smallFont, fill: textColor });
+        if (this.isMeal) {
+            this.add.sprite(50, 200, "eat");
+        }
+        this.instructionsText = this.add.text(90, 80, `${this.isMeal ? "Eat" : "Abduct"} a human`, { font: headerFont, fill: dangerColor });
+        this.nameText = this.add.text(90, 110, '', { font: headerFont, fill: dangerColor });
         this.circle1 = new Phaser.Geom.Circle(width / 2, height / 2, personSize * 2);
 
         this.people = this.add.group();

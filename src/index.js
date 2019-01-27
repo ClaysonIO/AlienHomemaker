@@ -8,9 +8,11 @@ export const width = 1100;
 export const height = 800;
 export const backgroundColor = '#182d3b';
 export const textColor = '#18A63b';
-export const biggerFont = '48px Courier';
-export const bigFont = '20px Courier';
-export const smallFont = '16px Courier';
+export const dangerColor = '#ce1e03';
+export const biggerFont = '48px Arial';
+export const bigFont = '20px Arial';
+export const smallFont = '16px Arial';
+export const headerFont = '24px Arial';
 
 const config = {
   type: Phaser.AUTO,

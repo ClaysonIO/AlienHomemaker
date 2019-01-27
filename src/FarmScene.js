@@ -1,5 +1,5 @@
 import * as R from "ramda";
-import {height, width, bigFont, textColor} from "./index";
+import {height, width, bigFont, textColor, dangerColor} from "./index";
 import {createTileBackground} from "./MapGenerate";
 
 const timeBetweenAbductionsMilliseconds = 3000;
@@ -65,7 +65,8 @@ export const FarmScene = new Phaser.Class({
 
     this.waitForMeal();
     const timeToMeal = this.data.get("timeToMeal");
-    this.mealText.setText(`Time to meal: ${timeToMeal}`);
+    this.mealText.setText(`Time to meal: ${timeToMeal}`)
+        .setFill(timeToMeal < 2 ? dangerColor : textColor);
 
     this.isMealTime = timeToMeal === 0;
     this.isPaused = false;
@@ -111,10 +112,12 @@ export const FarmScene = new Phaser.Class({
       this.blueText.setText(`Blue: ${(blueProportion * 100).toString().substr(0,4)}%`);
     }
     this.happiness = everybody.length ? totalHappiness / everybody.length : 1;
-    this.happinessText.setText(`Happiness: ${Math.floor(this.happiness * 100)}%`);
+    this.happinessText.setText(`Happiness: ${Math.floor(this.happiness * 100)}%`)
+        .setFill(this.happiness < 0.4 ? dangerColor : textColor);
 
     if (!this.isPaused){
-      this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toString().substr(0,4)}`);
+      this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toString().substr(0,4)}`)
+          .setFill(this.isMealTime ? dangerColor : textColor);
       this.populationText.setText(`Population: ${everybody.length}`);
       if (this.happiness < 0.15) {
         this.time.delayedCall(1000, () => this.scene.start("EndScene"), [], this)
