@@ -22,7 +22,7 @@ module.exports = {
         ]
     },
 
-  mode: 'development',
+  // mode: 'development',
 
     plugins: [
         new webpack.DefinePlugin({
