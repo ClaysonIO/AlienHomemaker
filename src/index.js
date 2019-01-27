@@ -23,7 +23,7 @@ const config = {
   physics: {
     default: 'impact',
     impact: {
-      debug: true,
+      debug: false,
     }
   },
   audio: {

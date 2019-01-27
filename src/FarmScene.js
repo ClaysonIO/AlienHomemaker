@@ -26,10 +26,17 @@ export const FarmScene = new Phaser.Class({
   preload: function () {
     this.load.image("face", "assets/face.png");
     this.load.image("farm-tiles", "../assets/bitmap.png")
+    this.load.image("background", "../assets/background.png")
+    this.load.image("bg-abduct", "../assets/bg-abduct.png")
+    this.load.image("bg-eat", "../assets/bg-eat.png")
   },
 
   create: function () {
     createTileBackground(this);
+
+    this.bg = this.add.image(width/2, height/2, 'background');
+    this.bgEat = this.add.image(width/2, height/2, 'bg-eat').setVisible(false);
+    this.bgAbduct = this.add.image(width/2, height/2, 'bg-abduct').setVisible(false);
 
     const sides = (64 * 2) + 96;
     const worldBounds = new Phaser.Geom.Rectangle(48, 48, 704, 504);
@@ -56,6 +63,9 @@ export const FarmScene = new Phaser.Class({
   },
 
   startScene: function(){
+    // this.bgEat.setVisible(true);
+    this.bgAbduct.setVisible(false);
+    this.bgEat.setVisible(false);
     R.values(this.getPeople())
       .forEach(p => {
         if(!p.symbol){
@@ -75,6 +85,12 @@ export const FarmScene = new Phaser.Class({
       () => {
         // this.isPaused = true;
         // this.scene.pause('FarmScene');
+        // this.bg.setVisible(false);
+        if(this.isMealTime){
+          this.bgEat.setVisible(true);
+        } else {
+          this.bgAbduct.setVisible(true);
+        }
         this.scene.run("SelectionScene", { isMeal: this.isMealTime });
       }, [], this)
   },
