@@ -106,6 +106,7 @@ export const FarmScene = new Phaser.Class({
   },
 
   removePerson(name) {
+    this.getPeople()[name].symbol.destroy();
     this.data.set("people", R.dissoc(name, this.getPeople()));
     this.data.set("timeToMeal", mealInterval);
   },
