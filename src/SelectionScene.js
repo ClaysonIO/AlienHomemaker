@@ -67,6 +67,7 @@ export const SelectionScene = new Phaser.Class({
             this.time.delayedCall(1500, () => drinkSound.play(), [], this);
         } else {
             const abductSound = this.sound.add("abduct");
+            abductSound.rate = 1.4;
             abductSound.play();
         }
         this.scene.bringToTop("SelectionScene");
