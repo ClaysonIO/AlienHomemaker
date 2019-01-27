@@ -39,7 +39,7 @@ export const SelectionScene = new Phaser.Class({
         }
         this.clearProfile();
         this.instructionsText.setText('');
-        this.scene.resume("FarmScene")
+        // this.scene.resume("FarmScene")
         this.scene.get("FarmScene").startScene();
         this.people.clear(true, true);
         this.people = null;
