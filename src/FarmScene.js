@@ -6,6 +6,10 @@ const timeBetweenAbductionSeconds = timeBetweenAbductionsMilliseconds / 1000;
 
 const mealInterval = 5;
 
+function getRandomIndex(arr) {
+  return Math.floor(Math.random() * arr.length);
+}
+
 export const FarmScene = new Phaser.Class({
 
   Extends: Phaser.Scene,
@@ -108,8 +112,16 @@ export const FarmScene = new Phaser.Class({
     const people = R.values(this.data.get("people"));
     const victims = [];
     const numberOfVictims = 3;
+    const set = new Set();
     for (let i = 0; i < numberOfVictims; i++) {
-      victims.push(people[Math.floor(Math.random() * people.length)]);
+      let id = getRandomIndex(people);
+      let maxAttempts = 5;
+      while (set.has(id) && maxAttempts > 0) {
+        id = getRandomIndex(people);
+        maxAttempts--;
+      }
+      set.add(id);
+      victims.push(people[id]);
     }
     return victims;
   }
