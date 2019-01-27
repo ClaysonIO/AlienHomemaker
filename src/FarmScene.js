@@ -63,7 +63,7 @@ export const FarmScene = new Phaser.Class({
 
     this.timedEvent = this.time.delayedCall(timeBetweenAbductionsMilliseconds,
       () => {
-        this.isPaused = true;
+        // this.isPaused = true;
         // this.scene.pause('FarmScene');
         this.scene.run("SelectionScene", { isMeal: this.isMealTime });
       }, [], this)
