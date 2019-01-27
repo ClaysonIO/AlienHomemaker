@@ -120,7 +120,7 @@ export const FarmScene = new Phaser.Class({
           .setFill(this.isMealTime ? dangerColor : textColor);
       this.populationText.setText(`Population: ${everybody.length}`);
       if (this.happiness < 0.15) {
-        this.time.delayedCall(1000, () => this.scene.start("EndScene"), [], this)
+        this.scene.start("EndScene");
       }
     }
   },
