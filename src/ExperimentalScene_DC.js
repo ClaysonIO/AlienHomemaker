@@ -53,7 +53,6 @@ export const ExperimentalScene = new Phaser.Class({
 
     button.setInteractive()
       .on('pointerdown', ()=>{
-        console.log("THIS", this);
         const newPerson = new Person();
         newPerson.setRandomPosition();
         newPerson.setSymbol(this.impact.add.sprite(newPerson.x, newPerson.y, "face"), this);

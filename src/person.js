@@ -53,8 +53,6 @@ export class Person {
   setRandomPosition(){
     this.x = Math.floor(Math.random() * width);
     this.y = Math.floor(Math.random() * height);
-    console.log(this.x, this.y);
-
   }
 
   updateHappiness(allPeople){

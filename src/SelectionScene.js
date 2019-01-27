@@ -24,12 +24,13 @@ export const SelectionScene = new Phaser.Class({
     sendToFarm: function(person) {
         const farm = this.scene.get("FarmScene");
         if (this.isMeal) {
+            farm.removePerson(person.name);
+        } else {
             person.setRandomPosition();
             farm.addPerson(person);
-        } else {
-            farm.removePerson(person.name);
         }
         this.clearText();
+        this.instructionsText.setText('');
         this.scene.switch("FarmScene")
     },
 
@@ -77,7 +78,6 @@ export const SelectionScene = new Phaser.Class({
         const personSize = 100;
         const farmScene = this.scene.get("FarmScene");
 
-        this.graphics = this.add.graphics();
         this.instructionsText = this.add.text(30, 30, `${this.isMeal ? "Eat" : "Abduct"} a human`, { font: '24px Courier', fill: '#00ff00' });
         this.nameText = this.add.text(30, 60, '', { font: '16px Courier', fill: '#00ff00' });
         this.emailText = this.add.text(30, 80, '', { font: '16px Courier', fill: '#00ff00' });

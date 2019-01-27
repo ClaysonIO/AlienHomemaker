@@ -43,8 +43,6 @@ export const FarmScene = new Phaser.Class({
       () => {
         this.scene.start("SelectionScene", { isMeal: this.isMealTime });
       }, [], this);
-
-    console.log(this.data.list);
   },
 
   update: function (time, delta) {
