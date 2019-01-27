@@ -63,7 +63,7 @@ export class Person {
   }
 
   createSymbol(scene){
-    const ref = new personIcon(scene, this.r, this.g, this.b, this.a, this.x, this.y);
+    const ref = new personIcon(scene, this.r, this.g, this.b, this.a, this.x, this.y, this.id);
 
     this.symbol = ref;
     // this.symbol.alpha = this.a;
@@ -164,9 +164,11 @@ export class Person {
 
 
 class personIcon{
-  constructor(sceneObject, r, g, b, a, x, y){
+  constructor(sceneObject, r, g, b, a, x, y, id){
     this.container = sceneObject.add.container();
-    this.sprite0 = sceneObject.add.sprite(0, 0, 'face');
+    // this.sprite0 = sceneObject.add.sprite(0, 0, 'face');
+    this.sprite0 = sceneObject.add.image(0, 0, 'i' + id);
+    this.sprite0.setDisplaySize(30, 30);
     this.whiteBG = sceneObject.add.rectangle( 0, 30, 30, 30, 0xcccccc);
     this.red = sceneObject.add.rectangle( -10, 45, 10, 0, 0xff0000);
     this.green = sceneObject.add.rectangle( 0, 45, 10, 0, 0x00ff00);
