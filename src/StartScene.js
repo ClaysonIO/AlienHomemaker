@@ -19,10 +19,13 @@ export const StartScene = new Phaser.Class({
         this.load.image("button", "assets/start.png");
         this.load.image("ship", "assets/spaceship.png");
         this.load.image("logo", "assets/logo.png");
+        this.load.audio("background", "assets/audio/background.mp3");
     },
 
     create: function ()
     {
+        const audio = this.sound.add("background", { loop: true });
+        audio.play();
         const spaceship = this.add.sprite(width / 2, height / 3, "ship");
         this.clickButton = this.add.sprite(width / 2, height / 1.8,"button")
             .setInteractive()

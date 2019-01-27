@@ -26,6 +26,9 @@ const config = {
       debug: true,
     }
   },
+  audio: {
+    disableWebAudio: true,
+  },
   scene: [ StartScene, SelectionScene, FarmScene, EndScene ]
   // scene: [ Experiment ]
 };
