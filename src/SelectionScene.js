@@ -31,7 +31,6 @@ export const SelectionScene = new Phaser.Class({
         if (this.isMeal) {
             farm.removePerson(person.name);
         } else {
-            person.setRandomPosition();
             farm.addPerson(person);
         }
         this.clearProfile();

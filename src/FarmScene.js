@@ -32,9 +32,9 @@ export const FarmScene = new Phaser.Class({
     createTileBackground(this);
 
     const sides = (64 * 2) + 96;
-    const worldBounds = new Phaser.Geom.Rectangle(0, 0, 800, 600);
+    const worldBounds = new Phaser.Geom.Rectangle(48, 48, 704, 504);
     const spriteBounds = Phaser.Geom.Rectangle.Inflate(Phaser.Geom.Rectangle.Clone(worldBounds), -sides, -sides);
-    this.impact.world.setBounds(0, 0, worldBounds.width, worldBounds.height, 64);
+    this.impact.world.setBounds(48, 48, worldBounds.width, worldBounds.height, 64);
 
     this.happiness = 1;
     this.countdownText = this.add.text(30, 30, '', {font: bigFont, fill: textColor});

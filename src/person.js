@@ -29,8 +29,8 @@ export class Person {
     this.priority = faker.random.arrayElement(['r', 'g', 'b']);
 
     //Current position in the farm
-    this.x = Math.floor(width * Math.random());
-    this.y = Math.floor(height * Math.random());
+    this.x = Math.floor(704 * Math.random()) + 32;
+    this.y = Math.floor(504 * Math.random()) + 32;
 
     //This is the
     this.symbol;
@@ -60,11 +60,6 @@ export class Person {
       })
 
     scene.input.setDraggable(this.symbol);
-  }
-
-  setRandomPosition(){
-    this.x = Math.floor(Math.random() * 800);
-    this.y = Math.floor(Math.random() * 600);
   }
 
   updateHappiness(allPeople, delta){
