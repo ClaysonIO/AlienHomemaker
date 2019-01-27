@@ -25,6 +25,7 @@ export const SelectionScene = new Phaser.Class({
         const farm = this.scene.get("FarmScene");
         farm.addPerson(person);
         farm.renderPerson(person);
+        this.clearText();
         this.scene.switch("FarmScene")
     },
 
@@ -48,19 +49,23 @@ export const SelectionScene = new Phaser.Class({
 
         c.on("pointerdown", () => {
             this.sendToFarm(person);
-        });
+        }, this);
         c.on("pointerover", () => {
             this.nameText.setText(person.name);
             this.emailText.setText(person.email);
             this.userNameText.setText('@' + person.userName);
-        });
+        }, this);
         c.on("pointerout", () => {
-            this.nameText.setText('');
-            this.emailText.setText('');
-            this.userNameText.setText('');
-        });
+            this.clearText();
+        }, this);
 
         return c;
+    },
+
+    clearText() {
+        this.nameText.setText('');
+        this.emailText.setText('');
+        this.userNameText.setText('');
     },
 
     create: function ()
