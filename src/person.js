@@ -11,9 +11,11 @@ export class Person {
     this.name = faker.name.findName(this.firstName, this.lastName, this.gender);
     this.userName = faker.internet.userName(this.firstName, this.lastName);
     this.email = faker.internet.email(this.firstname, this.lastName);
+    this.ipv6 = faker.internet.ipv6();
 
     const bgColor = this.hexToRgb(backgroundColor);
     const personColor = this.hexToRgb(faker.internet.color(bgColor.r, bgColor.g, bgColor.b));
+
     this.r = personColor.r;
     this.g = personColor.g;
     this.b = personColor.b;
