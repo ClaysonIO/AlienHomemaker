@@ -23,11 +23,15 @@ export const SelectionScene = new Phaser.Class({
     preload: function ()
     {
         if (!this.isMeal) {
+            this.load.audio("abduct", "assets/audio/abduct.mp3");
             this.load.image('i' + pid, 'https://picsum.photos/141/141/?random');
             this.load.image('i' + (pid + 1), 'https://picsum.photos/141/141/?random');
             this.load.image('i' + (pid + 2), 'https://picsum.photos/141/141/?random');
+        } else {
+            this.load.audio("eat", "assets/audio/eat.mp3");
+            this.load.audio("drink", "assets/audio/drink.mp3");
+            this.load.image("eat", "assets/attack.png")
         }
-        this.load.image("eat", "assets/attack.png")
     },
 
     sendToFarm: function(person) {
@@ -56,6 +60,16 @@ export const SelectionScene = new Phaser.Class({
 
     create: function ()
     {
+        if (this.isMeal) {
+            const eatSound = this.sound.add("eat");
+            eatSound.play();
+            const drinkSound = this.sound.add("drink");
+            this.time.delayedCall(1500, () => drinkSound.play(), [], this);
+        } else {
+            const abductSound = this.sound.add("abduct");
+            abductSound.rate = 1.4;
+            abductSound.play();
+        }
         this.scene.bringToTop("SelectionScene");
         const personSize = 100;
 

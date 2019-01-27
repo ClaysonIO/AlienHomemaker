@@ -24,12 +24,13 @@ export const StartScene = new Phaser.Class({
 
     create: function ()
     {
-        const audio = this.sound.add("background", { loop: true });
-        audio.play();
+        const audio = this.sound.add("background", { loop: true, });
+        audio.volume = 0.2;
         const spaceship = this.add.sprite(width / 2, height / 3, "ship");
         this.clickButton = this.add.sprite(width / 2, height / 1.8,"button")
             .setInteractive()
             .on("pointerdown", () => {
+                audio.play();
                 this.scene.start("FarmScene");
                 this.scene.get("FarmScene").clearData();
             }, this)
