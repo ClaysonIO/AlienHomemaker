@@ -1,4 +1,5 @@
 import { Person } from "./person";
+import { height, width, textColor, bigFont, smallFont } from "./index";
 
 export const SelectionScene = new Phaser.Class({
 
@@ -29,71 +30,72 @@ export const SelectionScene = new Phaser.Class({
             person.setRandomPosition();
             farm.addPerson(person);
         }
-        this.clearText();
+        this.clearProfile();
         this.instructionsText.setText('');
-        this.scene.switch("FarmScene")
+        this.scene.start("FarmScene")
     },
 
-    drawPerson: function(person, i, size)
+    drawPerson: function(person, size) 
     {
-        const config = this.game.config;
-
-        let cellwidth = config.width / 3;
-        let cellcenter = cellwidth / 2;
-        let y = config.height / 2;
-
         const circle = this.add.graphics();
         circle.fillStyle(person.color.color);
         circle.fillCircle(0, 0, size);
 
-        const txt = this.add.text(-16, -24, person.gender ? 'X' : 'Y', { font: '48px Courier', fill: person.textcolor.color });
-        const c = this.add.container((i * cellwidth) + cellcenter, y);
-        c.add([circle, txt]);
+        const txt = this.add.text(-16, -24, person.gender ? 'X' : 'Y', { font: '48px Courier', fill: '#000' });
+        const c = this.add.container(0, 0, [circle, txt]);
         const hitArea = new Phaser.Geom.Circle(0, 0, size);
-        c.setInteractive(hitArea, Phaser.Geom.Circle.Contains);
-
-        c.on("pointerdown", () => {
-            this.sendToFarm(person);
-        }, this);
-        c.on("pointerover", () => {
-            this.nameText.setText(person.name);
-            this.emailText.setText(person.email);
-            this.userNameText.setText('@' + person.userName);
-        }, this);
-        c.on("pointerout", () => {
-            this.clearText();
-        }, this);
-
+        c.setInteractive(hitArea, Phaser.Geom.Circle.Contains)
+            .on("pointerdown", () => {
+                this.sendToFarm(person);
+            })
+            .on("pointerover", () => {
+                this.setProfile(person);
+            })
+            .on("pointerout", () => {
+                this.clearProfile();
+            });
         return c;
     },
 
-    clearText() {
+    setProfile(person) {
+        this.nameText.setText(person.name + ' (@' + person.userName + ')');
+    },
+
+    clearProfile() {
         this.nameText.setText('');
-        this.emailText.setText('');
-        this.userNameText.setText('');
     },
 
     create: function ()
     {
         const personSize = 100;
-        const farmScene = this.scene.get("FarmScene");
+        const numPeople = 3;
 
-        this.instructionsText = this.add.text(30, 30, `${this.isMeal ? "Eat" : "Abduct"} a human`, { font: '24px Courier', fill: '#00ff00' });
-        this.nameText = this.add.text(30, 60, '', { font: '16px Courier', fill: '#00ff00' });
-        this.emailText = this.add.text(30, 80, '', { font: '16px Courier', fill: '#00ff00' });
-        this.userNameText = this.add.text(30, 100, '', { font: '16px Courier', fill: '#00ff00' });
+        this.graphics = this.add.graphics();
+        this.instructionsText = this.add.text(30, 30, `${this.isMeal ? "Eat" : "Abduct"} a human`, { font: bigFont, fill: textColor });
+        this.nameText = this.add.text(30, 60, '', { font: smallFont, fill: textColor });
 
-        const people = this.isMeal
-            ? farmScene.getVictims()
-            : [
-                new Person(),
-                new Person(),
-                new Person(),
-            ];
-        people.forEach((p, i) => this.drawPerson(p, i, personSize));
+        this.circle1 = new Phaser.Geom.Circle(width / 2, height / 2, personSize * 2);
+
+        this.people = this.add.group();
+        if (this.isMeal) {
+            const victims = this.scene.get("FarmScene").getVictims();
+            for (let i = 0; i < victims.size; ++i) {
+                const p = this.drawPerson(victims[i], personSize);
+                this.people.add(p);
+            }
+        } else {
+            for (let i = 0; i < numPeople; ++i) {
+                const p = this.drawPerson(new Person(), personSize);
+                this.people.add(p);
+            }
+        }
+        
+        Phaser.Actions.PlaceOnCircle(this.people.getChildren(), this.circle1);
     },
 
     update: function (time, delta)
     {
+        const rotationSpeed = 0.008;
+        Phaser.Actions.RotateAroundDistance(this.people.getChildren(), this.circle1, rotationSpeed, this.circle1.radius);
     }
 });

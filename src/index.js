@@ -7,12 +7,17 @@ import {MapGenerate} from "./MapGenerate";
 
 export const width = 1024;
 export const height = 768;
+export const backgroundColor = '#182d3b';
+export const textColor = '#18A63b';
+export const bigFont = '24px Courier';
+export const smallFont = '16px Courier';
+
 
 const config = {
   type: Phaser.AUTO,
   width,
   height,
-  backgroundColor: '#182d3b',
+  backgroundColor,
   parent: 'phaser-example',
   physics: {
     default: 'impact',

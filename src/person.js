@@ -1,6 +1,6 @@
 import faker from 'faker';
 import 'phaser';
-import {width, height} from "./index";
+import {width, height, backgroundColor} from "./index";
 
 export class Person {
   constructor() {
@@ -11,18 +11,21 @@ export class Person {
     this.name = faker.name.findName(this.firstName, this.lastName, this.gender);
     this.userName = faker.internet.userName(this.firstName, this.lastName);
     this.email = faker.internet.email(this.firstname, this.lastName);
-    this.r = Math.floor(Math.random() * 256);
-    this.g = Math.floor(Math.random() * 256);
-    this.b = Math.floor(Math.random() * 256);
+
+    const bgColor = this.hexToRgb(backgroundColor);
+    const personColor = this.hexToRgb(faker.internet.color(bgColor.r, bgColor.g, bgColor.b));
+    this.r = personColor.r;
+    this.g = personColor.g;
+    this.b = personColor.b;
 
     //Alpha is the happiness of the person;
-    this.a = .5;
-    this.color = new Phaser.Display.Color(this.r, this.g, this.b, Math.floor(this.a * 256));
-    this.textcolor = new Phaser.Display.Color(255 - this.r, 255 - this.g, 255 - this.b, 255);
+    this.a = 1.0;
 
+    this.color = new Phaser.Display.Color(this.r, this.g, this.b, Math.floor(this.a * 256));
+  
     //This is the one attribute that affects this person's happiness, and who they move towards.
     this.priority = faker.random.arrayElement(['r', 'g', 'b']);
-
+    
     //Current position in the farm
     this.x = Math.floor(width * Math.random());
     this.y = Math.floor(height * Math.random());
@@ -31,8 +34,17 @@ export class Person {
     this.symbol;
   }
 
-  setSymbol(ref, scene){
+  hexToRgb(hex){
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+  }
 
+  setSymbol(ref, scene){
+    console.log("SCENE", scene);
     this.symbol = ref;
     this.scene = scene;
     this.symbol.alpha = this.a;

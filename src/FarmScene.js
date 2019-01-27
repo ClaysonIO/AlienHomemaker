@@ -1,5 +1,5 @@
 import * as R from "ramda";
-import {height, width} from "./index";
+import {height, width, bigFont, textColor} from "./index";
 
 const timeBetweenAbductionsMilliseconds = 3000;
 const timeBetweenAbductionSeconds = timeBetweenAbductionsMilliseconds / 1000;
@@ -28,14 +28,14 @@ export const FarmScene = new Phaser.Class({
     const spriteBounds = Phaser.Geom.Rectangle.Inflate(Phaser.Geom.Rectangle.Clone(worldBounds), -sides, -sides);
     this.impact.world.setBounds(0, 0, worldBounds.width, worldBounds.height, 64);
 
-    this.countdownText = this.add.text(30, 30, '', {font: '24px Courier', fill: '#00ff00'});
+    this.countdownText = this.add.text(30, 30, '', {font: bigFont, fill: textColor});
 
     R.values(this.getPeople())
         .forEach(p => this.renderPerson(p));
 
     this.waitForMeal();
     const timeToMeal = this.data.get("timeToMeal");
-    this.mealText = this.add.text(30, 80, `Time to meal: ${timeToMeal}`, {font: '24px Courier', fill: '#00ff00'});
+    this.mealText = this.add.text(30, 80, `Time to meal: ${timeToMeal}`, {font: bigFont, fill: textColor});
 
     this.isMealTime = timeToMeal === 0;
 
