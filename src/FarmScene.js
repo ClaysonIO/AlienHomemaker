@@ -90,6 +90,7 @@ export const FarmScene = new Phaser.Class({
       greenCount += p.g;
     });
     if (isNotEmpty) {
+      this.graphics.clear();
       const totalCount = redCount + blueCount + greenCount;
       const redProportion = redCount / totalCount;
       this.graphics.fillStyle(this.hsv[0].color, 1);
