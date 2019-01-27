@@ -41,7 +41,11 @@ export const FarmScene = new Phaser.Class({
     this.mealText = this.add.text(810, 80, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
     this.happinessText = this.add.text(810, 130, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
     this.populationText = this.add.text(810, 180, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
-
+    this.hsv = Phaser.Display.Color.HSVColorWheel();
+    this.graphics = this.add.graphics({ x: 270, y: 8 });
+    this.redText = this.add.text(100, height * 0.8, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
+    this.greenText = this.add.text(100, height * 0.85, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
+    this.blueText = this.add.text(100, height * 0.9, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
 
     this.startScene();
   },
@@ -73,11 +77,34 @@ export const FarmScene = new Phaser.Class({
     const progress = timeBetweenAbductionSeconds - this.timedEvent.getProgress() * timeBetweenAbductionSeconds;
 
     const everybody = R.values(this.getPeople());
+    const isNotEmpty = everybody.length !== 0;
 
-    const totalHappiness = everybody.reduce((acc, p) => {
-      acc += p.updateHappiness(everybody, delta);
-      return acc;
-    }, 0);
+    let totalHappiness = 0;
+    let redCount = 0;
+    let blueCount = 0;
+    let greenCount = 0;
+    everybody.forEach(p => {
+      totalHappiness += p.updateHappiness(everybody, delta);
+      redCount += p.r;
+      blueCount += p.b;
+      greenCount += p.g;
+    });
+    if (isNotEmpty) {
+      const totalCount = redCount + blueCount + greenCount;
+      const redProportion = redCount / totalCount;
+      this.graphics.fillStyle(this.hsv[0].color, 1);
+      this.graphics.fillRect(0,height * 0.8,width * 0.7 * redProportion,8);
+      const greenProportion = greenCount / totalCount;
+      this.graphics.fillStyle(this.hsv[110].color, 1);
+      this.graphics.fillRect(0,height * 0.85,width * 0.7 * greenProportion,8);
+      const blueProportion = blueCount / totalCount;
+      this.graphics.fillStyle(this.hsv[220].color, 1);
+      this.graphics.fillRect(0,height * 0.9,width * 0.7 * blueProportion,8);
+      this.redText.setText(`Red: ${(redProportion * 100).toString().substr(0,4)}%`);
+      this.greenText.setText(`Green: ${(greenProportion * 100).toString().substr(0,4)}%`);
+      this.blueText.setText(`Blue: ${(blueProportion * 100).toString().substr(0,4)}%`);
+    }
+
     this.happiness = everybody.length ? totalHappiness / everybody.length : 1;
 
     if (!this.isPaused){

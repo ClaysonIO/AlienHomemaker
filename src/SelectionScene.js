@@ -30,7 +30,6 @@ export const SelectionScene = new Phaser.Class({
     },
 
     sendToFarm: function(person) {
-        console.log('selection-sendToFarm');
         const farm = this.scene.get("FarmScene");
         if (this.isMeal) {
             farm.removePerson(person.name);
@@ -56,7 +55,6 @@ export const SelectionScene = new Phaser.Class({
 
     create: function ()
     {
-        console.log('selection-create');
         this.scene.bringToTop("SelectionScene");
         const personSize = 100;
 
