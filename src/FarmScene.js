@@ -43,9 +43,9 @@ export const FarmScene = new Phaser.Class({
     this.populationText = this.add.text(810, 180, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
     this.hsv = Phaser.Display.Color.HSVColorWheel();
     this.graphics = this.add.graphics({ x: 270, y: 8 });
-    this.redText = this.add.text(100, height * 0.8, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
-    this.greenText = this.add.text(100, height * 0.85, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
-    this.blueText = this.add.text(100, height * 0.9, '', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
+    this.redText = this.add.text(100, height * 0.8, 'Red:', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
+    this.greenText = this.add.text(100, height * 0.85, 'Green:', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
+    this.blueText = this.add.text(100, height * 0.9, 'Blue:', {font: bigFont, fill: textColor, displayWidth: 200, style: {align: 'center'}});
 
     this.startScene();
   },
@@ -105,9 +105,8 @@ export const FarmScene = new Phaser.Class({
       this.greenText.setText(`Green: ${(greenProportion * 100).toString().substr(0,4)}%`);
       this.blueText.setText(`Blue: ${(blueProportion * 100).toString().substr(0,4)}%`);
     }
-    this.happinessText.setText(`Happiness: ${Math.floor(this.happiness * 100)}%`);
-
     this.happiness = everybody.length ? totalHappiness / everybody.length : 1;
+    this.happinessText.setText(`Happiness: ${Math.floor(this.happiness * 100)}%`);
 
     if (!this.isPaused){
       this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toString().substr(0,4)}`);
