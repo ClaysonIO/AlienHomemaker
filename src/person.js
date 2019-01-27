@@ -1,6 +1,6 @@
 import faker from 'faker';
 import 'phaser';
-import {width, height, backgroundColor} from "./index";
+import {width, height, backgroundColor, biggerFont, pid} from "./index";
 
 export class Person {
   constructor() {
@@ -11,7 +11,7 @@ export class Person {
     this.name = faker.name.findName(this.firstName, this.lastName, this.gender);
     this.userName = faker.internet.userName(this.firstName, this.lastName);
     this.email = faker.internet.email(this.firstname, this.lastName);
-    this.ipv6 = faker.internet.ipv6();
+    this.id = pid++;
 
     const bgColor = this.hexToRgb(backgroundColor);
     const personColor = this.hexToRgb(faker.internet.color(bgColor.r, bgColor.g, bgColor.b));
@@ -80,6 +80,24 @@ export class Person {
     if(this.a > 1){
       this.a = 1;
     }
+  }
+
+  drawPerson(scene, size){
+      const shadowCircle = scene.add.graphics();
+      shadowCircle.fillStyle('#000');
+      shadowCircle.fillCircle(0, 0, size + 2);
+
+      const circle = scene.add.graphics();
+      circle.fillStyle(this.color.color);
+      circle.fillCircle(0, 0, size);
+
+      const txt = scene.add.text(Math.floor(size * 0.355), Math.floor(size * 0.71), this.gender ? 'X' : 'Y', { font: biggerFont, fill: '#FFF' });
+      const img = scene.add.image(0, 0, 'i' + this.id);
+      const c = scene.add.container(0, 0, [shadowCircle, circle, txt, img]);
+
+      const hitArea = new Phaser.Geom.Circle(0, 0, size);
+      c.setInteractive(hitArea, Phaser.Geom.Circle.Contains);
+      return c;
   }
 
   calculateHappinessImpact(otherPerson){

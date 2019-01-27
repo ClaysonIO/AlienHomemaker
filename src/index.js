@@ -11,7 +11,7 @@ export const textColor = '#18A63b';
 export const biggerFont = '48px Courier';
 export const bigFont = '20px Courier';
 export const smallFont = '16px Courier';
-
+export let pid = 0;
 
 const config = {
   type: Phaser.AUTO,
