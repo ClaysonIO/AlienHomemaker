@@ -1,3 +1,5 @@
+import { width, height } from "./index";
+
 export const StartScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -20,8 +22,8 @@ export const StartScene = new Phaser.Class({
 
     create: function ()
     {
-        const spaceship = this.add.sprite(450, 300, "ship");
-        this.clickButton = this.add.sprite(450,450,"button")
+        const spaceship = this.add.sprite(width / 2, height / 3, "ship");
+        this.clickButton = this.add.sprite(width / 2, height / 1.8,"button")
             .setInteractive()
             .on("pointerdown", () => {
                 this.scene.start("FarmScene");

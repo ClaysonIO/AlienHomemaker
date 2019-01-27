@@ -57,8 +57,7 @@ export const ExperimentalScene = new Phaser.Class({
         newPerson.setRandomPosition();
         newPerson.setSymbol(this.impact.add.sprite(newPerson.x, newPerson.y, "face"), this);
         this.allPeople.push(newPerson);
-      })
-
+      });
   },
 
   update:  function(time, delta)
