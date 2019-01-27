@@ -1,5 +1,7 @@
 import { Person } from "./person";
-import { height, width, textColor, bigFont, smallFont, pid } from "./index";
+import { height, width, textColor, bigFont, smallFont } from "./index";
+
+let pid = 0;
 
 export const SelectionScene = new Phaser.Class({
 
@@ -28,6 +30,7 @@ export const SelectionScene = new Phaser.Class({
     },
 
     sendToFarm: function(person) {
+        console.log('selection-sendToFarm');
         const farm = this.scene.get("FarmScene");
         if (this.isMeal) {
             farm.removePerson(person.name);
@@ -38,6 +41,8 @@ export const SelectionScene = new Phaser.Class({
         this.instructionsText.setText('');
         this.scene.resume("FarmScene")
         this.scene.get("FarmScene").startScene();
+        this.people.clear(true, true);
+        this.people = null;
         this.scene.stop('SelectionScene');
     },
 
@@ -51,7 +56,7 @@ export const SelectionScene = new Phaser.Class({
 
     create: function ()
     {
-        console.log('create');
+        console.log('selection-create');
         this.scene.bringToTop("SelectionScene");
         const personSize = 100;
 
@@ -63,7 +68,7 @@ export const SelectionScene = new Phaser.Class({
         this.people = this.add.group();
         const pplList = this.isMeal 
             ? this.scene.get("FarmScene").getVictims()
-            : [ new Person(), new Person(), new Person() ];
+            : [ new Person(pid++), new Person(pid++), new Person(pid++) ];
 
         pplList.forEach(person => {
             const c = person.drawPerson(this, personSize);

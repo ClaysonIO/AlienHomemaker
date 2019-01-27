@@ -1,9 +1,9 @@
 import faker from 'faker';
 import 'phaser';
-import {width, height, backgroundColor, biggerFont, pid} from "./index";
+import {backgroundColor, biggerFont} from "./index";
 
 export class Person {
-  constructor() {
+  constructor(pid) {
     this.gender = faker.random.number(1); // 0 is male, 1 is female
 
     this.firstName = faker.name.firstName(this.gender);
@@ -11,7 +11,7 @@ export class Person {
     this.name = faker.name.findName(this.firstName, this.lastName, this.gender);
     this.userName = faker.internet.userName(this.firstName, this.lastName);
     this.email = faker.internet.email(this.firstname, this.lastName);
-    this.id = pid++;
+    this.id = pid;
 
     const bgColor = this.hexToRgb(backgroundColor);
     const personColor = this.hexToRgb(faker.internet.color(bgColor.r, bgColor.g, bgColor.b));
