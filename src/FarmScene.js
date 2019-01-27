@@ -90,6 +90,7 @@ export const FarmScene = new Phaser.Class({
       greenCount += p.g;
     });
     if (isNotEmpty) {
+      this.graphics.clear();
       const totalCount = redCount + blueCount + greenCount;
       const redProportion = redCount / totalCount;
       this.graphics.fillStyle(this.hsv[0].color, 1);
@@ -104,15 +105,15 @@ export const FarmScene = new Phaser.Class({
       this.greenText.setText(`Green: ${(greenProportion * 100).toString().substr(0,4)}%`);
       this.blueText.setText(`Blue: ${(blueProportion * 100).toString().substr(0,4)}%`);
     }
+    this.happinessText.setText(`Happiness: ${Math.floor(this.happiness * 100)}%`);
 
     this.happiness = everybody.length ? totalHappiness / everybody.length : 1;
 
     if (!this.isPaused){
       this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toString().substr(0,4)}`);
-      this.happinessText.setText(`Happiness: ${Math.floor(this.happiness * 100)}%`);
       this.populationText.setText(`Population: ${everybody.length}`);
       if (this.happiness < 0.15) {
-        this.time.delayedCall(1500, () => this.scene.start("EndScene"), [], this)
+        this.time.delayedCall(1000, () => this.scene.start("EndScene"), [], this)
       }
     }
   },
