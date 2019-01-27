@@ -1,5 +1,5 @@
 import { Person } from "./person";
-import { height, width, textColor, bigFont, smallFont } from "./index";
+import { height, width, textColor, biggerFont, bigFont, smallFont } from "./index";
 
 export const SelectionScene = new Phaser.Class({
 
@@ -20,6 +20,10 @@ export const SelectionScene = new Phaser.Class({
 
     preload: function ()
     {
+        this.pplList = this.isMeal 
+            ? this.scene.get("FarmScene").getVictims()
+            : [ new Person(), new Person(), new Person() ];
+        this.pplList.forEach(p => this.load.image(p.ipv6, 'https://picsum.photos/141/141/?random'));
     },
 
     sendToFarm: function(person) {
@@ -39,12 +43,18 @@ export const SelectionScene = new Phaser.Class({
 
     drawPerson: function(person, size) 
     {
+        const shadowCircle = this.add.graphics();
+        shadowCircle.fillStyle('#000');
+        shadowCircle.fillCircle(0, 0, size + 2);
+
         const circle = this.add.graphics();
         circle.fillStyle(person.color.color);
         circle.fillCircle(0, 0, size);
 
-        const txt = this.add.text(-16, -24, person.gender ? 'X' : 'Y', { font: '48px Courier', fill: '#000' });
-        const c = this.add.container(0, 0, [circle, txt]);
+        const txt = this.add.text(35, 71, person.gender ? 'X' : 'Y', { font: biggerFont, fill: '#FFF' });
+        const img = this.add.image(0, 0, person.ipv6);
+        const c = this.add.container(0, 0, [shadowCircle, circle, txt, img]);
+
         const hitArea = new Phaser.Geom.Circle(0, 0, size);
         c.setInteractive(hitArea, Phaser.Geom.Circle.Contains)
             .on("pointerdown", () => {
@@ -78,11 +88,7 @@ export const SelectionScene = new Phaser.Class({
         this.circle1 = new Phaser.Geom.Circle(width / 2, height / 2, personSize * 2);
 
         this.people = this.add.group();
-        const pplList = this.isMeal 
-            ? this.scene.get("FarmScene").getVictims()
-            : [ new Person(), new Person(), new Person() ];
-        pplList.forEach(p => this.people.add(this.drawPerson(p, personSize)));
-
+        this.pplList.forEach(p => this.people.add(this.drawPerson(p, personSize)));
         Phaser.Actions.PlaceOnCircle(this.people.getChildren(), this.circle1);
     },
 
