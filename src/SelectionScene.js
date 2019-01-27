@@ -68,28 +68,18 @@ export const SelectionScene = new Phaser.Class({
     create: function ()
     {
         const personSize = 100;
-        const numPeople = 3;
 
         this.graphics = this.add.graphics();
         this.instructionsText = this.add.text(30, 30, `${this.isMeal ? "Eat" : "Abduct"} a human`, { font: bigFont, fill: textColor });
         this.nameText = this.add.text(30, 60, '', { font: smallFont, fill: textColor });
-
         this.circle1 = new Phaser.Geom.Circle(width / 2, height / 2, personSize * 2);
 
         this.people = this.add.group();
-        if (this.isMeal) {
-            const victims = this.scene.get("FarmScene").getVictims();
-            for (let i = 0; i < victims.size; ++i) {
-                const p = this.drawPerson(victims[i], personSize);
-                this.people.add(p);
-            }
-        } else {
-            for (let i = 0; i < numPeople; ++i) {
-                const p = this.drawPerson(new Person(), personSize);
-                this.people.add(p);
-            }
-        }
-        
+        const pplList = this.isMeal 
+            ? this.scene.get("FarmScene").getVictims()
+            : [ new Person(), new Person(), new Person() ];
+        pplList.forEach(p => this.people.add(this.drawPerson(p, personSize)));
+
         Phaser.Actions.PlaceOnCircle(this.people.getChildren(), this.circle1);
     },
 
