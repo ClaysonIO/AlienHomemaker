@@ -88,6 +88,9 @@ export const FarmScene = new Phaser.Class({
       this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toPrecision(3)}`);
       this.happinessText.setText(`Happiness: ${Math.floor(this.happiness * 100)}%`);
       this.populationText.setText(`Population: ${everybody.length}`);
+      if (this.happiness < 0.15) {
+        this.time.delayedCall(1500, () => this.scene.start("EndScene"), [], this)
+      }
     }
   },
 
