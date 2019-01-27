@@ -63,8 +63,8 @@ export class Person {
   }
 
   setRandomPosition(){
-    this.x = Math.floor(Math.random() * width);
-    this.y = Math.floor(Math.random() * height);
+    this.x = Math.floor(Math.random() * 800);
+    this.y = Math.floor(Math.random() * 600);
   }
 
   updateHappiness(allPeople, delta){
@@ -75,7 +75,6 @@ export class Person {
       return acc;
     }, {netHappiness: 0, netVelocity: new Phaser.Math.Vector2({x: 0, y: 0})});
 
-    console.log("Delta", delta);
     this.setHappiness(netHappiness * (delta / 1000));
     this.symbol.setAcceleration(netVelocity.x, netVelocity.y);
     return this.a;
@@ -86,7 +85,6 @@ export class Person {
     if(this.a > 1){
       this.a = 1;
     }
-    console.log(this.a);
   }
 
   calculateHappinessImpact(otherPerson){

@@ -1,5 +1,6 @@
 import * as R from "ramda";
 import {height, width, bigFont, textColor} from "./index";
+import {createTileBackground} from "./MapGenerate";
 
 const timeBetweenAbductionsMilliseconds = 3000;
 const timeBetweenAbductionSeconds = timeBetweenAbductionsMilliseconds / 1000;
@@ -24,11 +25,14 @@ export const FarmScene = new Phaser.Class({
 
   preload: function () {
     this.load.image("face", "assets/face.png");
+    this.load.image("farm-tiles", "../assets/bitmap.png")
   },
 
   create: function () {
+    createTileBackground(this);
+
     const sides = (64 * 2) + 96;
-    const worldBounds = new Phaser.Geom.Rectangle(0, 0, width, height);
+    const worldBounds = new Phaser.Geom.Rectangle(0, 0, 800, 600);
     const spriteBounds = Phaser.Geom.Rectangle.Inflate(Phaser.Geom.Rectangle.Clone(worldBounds), -sides, -sides);
     this.impact.world.setBounds(0, 0, worldBounds.width, worldBounds.height, 64);
 
@@ -37,6 +41,7 @@ export const FarmScene = new Phaser.Class({
     this.mealText = this.add.text(30, 80, '', {font: bigFont, fill: textColor});
     this.happinessText = this.add.text(30, 130, '', {font: bigFont, fill: textColor});
     this.populationText = this.add.text(30, 180, '', {font: bigFont, fill: textColor});
+
 
     this.startScene();
   },
@@ -65,8 +70,6 @@ export const FarmScene = new Phaser.Class({
         this.countdownText.setText('');
         this.happinessText.setText('');
         this.populationText.setText('');
-
-        console.log("ACTIVE", this.scene.get('FarmScene'))
       }, [], this)
   },
 

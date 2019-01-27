@@ -3,7 +3,6 @@ import {SelectionScene} from "./SelectionScene";
 import {StartScene} from "./StartScene";
 import {FarmScene} from "./FarmScene";
 import {EndScene} from "./EndScene";
-import {MapGenerate} from "./MapGenerate";
 
 export const width = 1024;
 export const height = 768;
@@ -26,7 +25,7 @@ const config = {
       debug: true,
     }
   },
-  scene: [ StartScene, SelectionScene, FarmScene, EndScene, MapGenerate ]
+  scene: [ StartScene, SelectionScene, FarmScene, EndScene ]
   // scene: [ ExperimentalScene ]
 };
 
