@@ -53,6 +53,7 @@ export const ExperimentalScene = new Phaser.Class({
 
     button.setInteractive()
       .on('pointerdown', ()=>{
+        console.log("THIS", this);
         const newPerson = new Person();
         newPerson.setRandomPosition();
         newPerson.setSymbol(this.impact.add.sprite(newPerson.x, newPerson.y, "face"), this);
@@ -62,11 +63,11 @@ export const ExperimentalScene = new Phaser.Class({
   },
 
   update:  function(time, delta)
-{
-this.allPeople.forEach(val=>{
-  val.updateHappiness()
-})
-},
+  {
+    this.allPeople.forEach(val=>{
+      val.updateHappiness(this.allPeople)
+    })
+  },
 
   enterButtonHoverState() {
     this.clickButton.setAlpha(0.5);

@@ -14,6 +14,7 @@ export class Person {
     this.r = Math.floor(Math.random() * 256);
     this.g = Math.floor(Math.random() * 256);
     this.b = Math.floor(Math.random() * 256);
+
     //Alpha is the happiness of the person;
     this.a = .5;
     this.color = new Phaser.Display.Color(this.r, this.g, this.b, Math.floor(this.a * 256));
@@ -23,8 +24,8 @@ export class Person {
     this.priority = faker.random.arrayElement(['r', 'g', 'b']);
 
     //Current position in the farm
-    this.x = null;
-    this.y = null;
+    this.x = Math.floor(width * Math.random());
+    this.y = Math.floor(height * Math.random());
 
     //This is the
     this.symbol;
@@ -36,7 +37,7 @@ export class Person {
     this.scene = scene;
     this.symbol.alpha = this.a;
     this.symbol.setOrigin(.5, .5)
-    this.symbol.setActiveCollision().setAvsB().setBounce(1);
+    this.symbol.setActiveCollision().setAvsB().setBounce(5);
 
     this.symbol.setInteractive()
       .on('pointerover', ()=>{
@@ -56,11 +57,11 @@ export class Person {
 
   }
 
-  updateHappiness(){
+  updateHappiness(allPeople){
     let netHappiness = 0;
     let netVelocity = new Phaser.Math.Vector2({x: 0, y: 0});
 
-    this.scene.allPeople.forEach(val=>{
+    allPeople.forEach(val=>{
       const happiness = this.calculateHappinessImpact(val);
       netHappiness -= happiness;
 
@@ -68,7 +69,7 @@ export class Person {
       return [val.name, happiness.absolute, happiness.vector.x, happiness.vector.y];
     });
 
-    this.symbol.setVelocity(netVelocity.x, netVelocity.y);
+    this.symbol.setAcceleration(netVelocity.x, netVelocity.y);
   }
 
   calculateHappinessImpact(otherPerson){
