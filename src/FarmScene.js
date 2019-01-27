@@ -52,8 +52,11 @@ export const FarmScene = new Phaser.Class({
     const progress = timeBetweenAbductionSeconds - this.timedEvent.getProgress() * timeBetweenAbductionSeconds;
     this.countdownText.setText(`Next ${this.isMealTime ? "Meal" : "Abduction"}: ${progress.toPrecision(3)}`);
 
-    R.values(this.getPeople()).forEach(p => {
-      p.updateHappiness(R.values(this.getPeople()))
+    const everybody = R.values(this.getPeople());
+
+    everybody.forEach(p => {
+      this.renderPerson(p);
+      p.updateHappiness(everybody);
     })
   },
 

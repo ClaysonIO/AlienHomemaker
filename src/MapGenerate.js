@@ -10,7 +10,7 @@ const config = {
     }
 };
 
-const game = new Phaser.Game(config);
+// const game = new Phaser.Game(config);
 
 function preload(){
     this.load.image("farm-tiles", "../assets/bitmap.png")
