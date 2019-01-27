@@ -13,13 +13,6 @@ export class Person {
     this.email = faker.internet.email(this.firstname, this.lastName);
     this.id = pid;
 
-    const bgColor = this.hexToRgb(backgroundColor);
-    const personColor = this.hexToRgb(faker.internet.color(bgColor.r, bgColor.g, bgColor.b));
-
-    // this.r = personColor.r;
-    // this.g = personColor.g;
-    // this.b = personColor.b;
-
     this.r = Math.floor(Math.random() * 256);
     this.g = Math.floor(Math.random() * 256);
     this.b = Math.floor(Math.random() * 256);
