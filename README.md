@@ -1,6 +1,6 @@
-# Phaser 3 Webpack Project Template
+# Alien Homemaker: A Global Game Jam 2019 Production
 
-A Phaser 3 Project Template
+This game was developed at the Facebook/Oculus site during the 2019 Global Game Jam. More details are available on the [game page](https://globalgamejam.org/2019/games/alien-homemaker). It was built using [Phaser](http://phaser.io/).
 
 ### Requirements
 
